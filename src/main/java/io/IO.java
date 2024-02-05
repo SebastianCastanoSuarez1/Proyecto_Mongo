@@ -49,8 +49,7 @@ public class IO {
 	/**
 	 * Muestra un objeto
 	 * 
-	 * @param o
-	 *            objeto
+	 * @param o objeto
 	 */
 	static public void print(Object o) {
 		System.out.print(o);
@@ -59,8 +58,7 @@ public class IO {
 	/**
 	 * Muestra un objeto y salta de l�nea
 	 * 
-	 * @param o
-	 *            objeto
+	 * @param o objeto
 	 */
 	static public void println(Object o) {
 		System.out.println(o);
@@ -201,18 +199,17 @@ public class IO {
 	/*
 	 * Métodos para idioma español
 	 *
-	 * static public void escribir(Object o) { println(o); }
-	 * static public void mostrar(Object o) { println(o); }
-	 * static public int leerEntero() { return readInt(); }
-	 * static public double leerDecimal() { return readDouble(); }
+	 * static public void escribir(Object o) { println(o); } static public void
+	 * mostrar(Object o) { println(o); } static public int leerEntero() { return
+	 * readInt(); } static public double leerDecimal() { return readDouble(); }
 	 * static public char leerCaracter() { return readChar(); }
 	 */
-	public static Double readSalario(){
+	public static Double readSalario() {
 		while (true) {
 			try {
 				double salario;
-				salario=Double.parseDouble(sc.nextLine());
-				if (salario>=0) {
+				salario = Double.parseDouble(sc.nextLine());
+				if (salario >= 0) {
 					return salario;
 				} else {
 					throw new Exception("El salario debe ser mayor a 0");
@@ -222,16 +219,50 @@ public class IO {
 			}
 		}
 	}
-	
+
 	static public String readNombre() {
 		while (true) {
 			try {
 				String nombre;
-				nombre=sc.nextLine();
-				if (nombre.length()>0) {
+				nombre = sc.nextLine();
+				if (nombre.length() > 0) {
 					return nombre;
 				} else {
 					throw new Exception("El nombre debe tner caracteres");
+				}
+			} catch (Exception e) {
+				System.err.print("ERROR: No hay caracteres");
+			}
+		}
+	}
+
+	static public String readFecha() {
+		while (true) {
+			try {
+				String fecha;
+				String regex = "^(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/((19|20)\\d\\d)$";
+				fecha = sc.nextLine();
+				if (fecha.matches(regex)) {
+					return fecha;
+				} else {
+					throw new Exception("El nombre debe tner caracteres");
+				}
+			} catch (Exception e) {
+				System.err.print("ERROR: No tiene formato");
+			}
+		}
+	}
+
+	static public String readDni() {
+		while (true) {
+			try {
+				String nombre;
+				String regex = "^\\d{8}[A-Z]$";
+				nombre = sc.nextLine();
+				if (nombre.matches(regex)) {
+					return nombre;
+				} else {
+					throw new Exception("El dni debe tener este formato :00000000A");
 				}
 			} catch (Exception e) {
 				System.err.print("ERROR: No hay caracteres");
