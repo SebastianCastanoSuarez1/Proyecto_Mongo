@@ -1,5 +1,7 @@
 package io;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -236,6 +238,44 @@ public class IO {
 		}
 	}
 
+	static public List<String> readList() {
+		List<String> list = new ArrayList<String>();
+		String cadena;
+		System.out.println("Ingrese los elementos de la lista (escriba 'fin' para terminar):");
+		while (true) {
+			try {
+				cadena = sc.nextLine();
+				if (cadena.equalsIgnoreCase("fin")) {
+					break;
+				} else if (cadena.length() > 0) {
+					list.add(cadena);
+				} else {
+					throw new Exception("El elemento debe tener caracteres");
+				}
+			} catch (Exception e) {
+				System.err.println("ERROR: No hay caracteres");
+			}
+		}
+		return list;
+	}
+
+	static public String readSexo() {
+		while (true) {
+			try {
+				String sexo;
+				sexo = sc.nextLine();
+				if (sexo.equalsIgnoreCase("Masculino") || sexo.equalsIgnoreCase("Femenino")) {
+					sexo = sexo.substring(0, 1).toUpperCase() + sexo.substring(1, sexo.length() - 1).toLowerCase();
+					return sexo;
+				} else {
+					throw new Exception("el sexo debe ser masculino y femenino");
+				}
+			} catch (Exception e) {
+				System.err.print("ERROR: No hay caracteres");
+			}
+		}
+	}
+
 	static public String readFecha() {
 		while (true) {
 			try {
@@ -245,7 +285,24 @@ public class IO {
 				if (fecha.matches(regex)) {
 					return fecha;
 				} else {
-					throw new Exception("El nombre debe tner caracteres");
+					throw new Exception("la fecha debe tener este fomrato 00/00/0000");
+				}
+			} catch (Exception e) {
+				System.err.print("ERROR: No tiene formato");
+			}
+		}
+	}
+
+	static public String readGrupoSanguineo() {
+		while (true) {
+			try {
+				String Grupo_Sanguineo;
+				String regex = "^(?i)(0|[AB]|AB)[+-]$";
+				Grupo_Sanguineo = sc.nextLine();
+				if (Grupo_Sanguineo.matches(regex)) {
+					return Grupo_Sanguineo.toUpperCase();
+				} else {
+					throw new Exception("El grupo sanguineo debe ser 0+/-, ");
 				}
 			} catch (Exception e) {
 				System.err.print("ERROR: No tiene formato");

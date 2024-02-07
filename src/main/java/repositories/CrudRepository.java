@@ -8,10 +8,6 @@ import org.bson.Document;
 public interface CrudRepository<T, id> {
 	List<Document> findAll();
 
-	Boolean save(T entity);
-
-	Boolean delete(T entity);
-
 	Boolean save(Document entity);
 
 	Boolean delete(Document entity);
