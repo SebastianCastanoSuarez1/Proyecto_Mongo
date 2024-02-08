@@ -1,13 +1,23 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.Document;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import io.IO;
 import model.Paciente;
 
 public class PacienteView {
+	final List<String> opciones = List.of("1.- Mostrar pacientes", "2.- Añadir paciente", "3.- Modificar paciente",
+			"4.- Eliminar paciente", "5.- Buscar paciente por dni", "0.- Salir");
+
 	public Document addPaciente() {
 		Document paciente, hisorialMedico = null;
 		paciente = anadirVariablesObligatorias();
@@ -135,7 +145,8 @@ public class PacienteView {
 		return paciente;
 	}
 
-	private void buscarPorValor() {
+	public String[] buscarPorValor() {
+		String[] busqueda = new String[2];
 		IO.println("Ingrese el nombre del atributo por el cual desea buscar:");
 		IO.println(" Dni");
 		IO.println(" Nombre");
@@ -149,11 +160,59 @@ public class PacienteView {
 		IO.println(" Historial_Medico");
 		IO.println(" Enfermedad");
 		IO.println(" Tipo");
-		String atributoBusqueda = IO.readString();
+		busqueda[0] = IO.readString();
+		IO.println("Ingrese el valor del atributo:");
+		busqueda[1] = IO.readString();
+		return busqueda;
 	}
-	// TODO si puedes ve haciendo tanto el de buscarValor, y mira si puedes hacer lo
-	// del atributo, pero con listas y con lo de enfermedades que era un objeto
-	// dentro de otro
-	
+
+	public String findByDNI() {
+		IO.print("dni del paciente");
+		return IO.readDni();
+	}
+
+	public String findByNombre() {
+		IO.print("nombre del paciente");
+		return IO.readNombre();
+	}
+
+	public String pretty(String json) {
+		JsonElement je = JsonParser.parseString(json);
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		return gson.toJson(je);
+	}
+
+	public void mostrarPacientes(List<Document> pacientes) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		for (Document doc : pacientes) {
+			String json = gson.toJson(doc);
+			System.out.println(pretty(json));
+		}
+	}
+
+	public void update() {
+		String valor, atributo;
+		ArrayList<String> atributos = new ArrayList<>();
+
+		do {
+			System.out.println("Introduce el nombre del atributo que quieres actualizar (o 'salir' para terminar):");
+			atributo = IO.readString();
+
+			if (!atributo.equals("salir")) {
+				System.out.println("Introduce el nuevo valor para " + atributo + ":");
+				valor = IO.readString();
+				atributos.add(atributo + ": " + valor);
+			}
+
+		} while (!atributo.equals("salir"));
+	}
+
+	public void mostrar(String mensaje) {
+		IO.println(mensaje);
+	}
+
+	public void mostrar(Optional<Document> depart) {
+		IO.println(depart.orElse(null));
+	}
 
 }

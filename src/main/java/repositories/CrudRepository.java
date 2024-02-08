@@ -10,7 +10,7 @@ public interface CrudRepository<T, id> {
 
 	Boolean save(Document entity);
 
-	Boolean delete(Document entity);
-
 	Optional<Document> findById(String id);
+
+	Boolean delete(String dni);
 }

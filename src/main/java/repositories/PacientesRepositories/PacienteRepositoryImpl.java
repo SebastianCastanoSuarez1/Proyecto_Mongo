@@ -66,15 +66,22 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@Override
-	public Boolean delete(Document entity) {
+	public Boolean delete(String dni) {
 		try {
-			Bson filter = eq(dni, entity.getString(dni));
+			Bson filter = eq(dni, dni);
 			collection.deleteOne(filter);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public List<Document> findByNombre(String nombre) {
+		Bson filter = eq("Nombre", nombre);
+		Bson projectionFields = Projections.excludeId();
+		List<Document> results = collection.find(filter).projection(projectionFields).into(new ArrayList<>());
+		return results;
 	}
 
 }
