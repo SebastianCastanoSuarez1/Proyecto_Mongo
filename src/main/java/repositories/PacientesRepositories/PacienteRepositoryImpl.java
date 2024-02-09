@@ -27,9 +27,9 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
 	@Override
 	public List<Document> findAll() {
-
-		Bson projectionFields = Projections.fields(Projections.include(dni, nombre, enfermedad),
+		Bson projectionFields = Projections.fields(Projections.include(dni, nombre, enfermedad, tipo),
 				Projections.excludeId());
+
 		MongoCursor<Document> cursor = collection.find().projection(projectionFields).iterator();
 
 		List<Document> documentList = new ArrayList<>();
@@ -48,9 +48,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	@Override
 	public Optional<Document> findById(String id) {
 		Bson filter = eq(dni, id);
-		Bson projectionFields = Projections.fields(Projections.include(dni, nombre, enfermedad),
-				Projections.excludeId());
-		Document result = collection.find(filter).projection(projectionFields).first();
+		Document result = collection.find(filter).first();
 		return Optional.ofNullable(result);
 	}
 
@@ -68,7 +66,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	@Override
 	public Boolean delete(String dni) {
 		try {
-			Bson filter = eq(dni, dni);
+			Bson filter = eq("Dni", dni);
 			collection.deleteOne(filter);
 			return true;
 		} catch (Exception e) {
@@ -78,10 +76,32 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	public List<Document> findByNombre(String nombre) {
+		System.out.println("Buscando por nombre: " + nombre); // Mensaje de depuración
+
 		Bson filter = eq("Nombre", nombre);
 		Bson projectionFields = Projections.excludeId();
+
 		List<Document> results = collection.find(filter).projection(projectionFields).into(new ArrayList<>());
+
+		System.out.println("Resultados encontrados: " + results.size()); // Mensaje de depuración
 		return results;
+	}
+
+	public Boolean update(Optional<Document> paciente, String atributo, String valor) {
+		try {
+
+			if (paciente.isPresent()) {
+				Document filter = paciente.get(); // filtro para seleccionar el documento a actualizar
+				Document update = new Document("$set", new Document(atributo, valor));
+				collection.updateOne(filter, update);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,15 +10,44 @@ import repositories.PacientesRepositories.PacienteRepositoryImpl;
 import view.PacienteView;
 
 public class PacienteController {
-	private PacienteRepositoryImpl pacienteRepositoryImpl;
-	private PacienteView pacienteView;
-	private String dni = "Dni", nombre = "Nombre", apellidos = "Apellido", fechaNacimiento = "Fecha_Nacimiento",
-			sexo = "Sexo", lugarNacimiento = "Lugar_Nacimiento", altura = "Altura", peso = "Peso",
-			grupo_Sanguineo = "Grupo_Sanguineo", enfermedad = "Enfermedad", tipo = "Tipo";
+	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
+	private final PacienteView pacienteView = new PacienteView();
 
 	public void menu() {
 		boolean fin = false;
 		Integer opcion;
+
+		do {
+			opcion = pacienteView.getOpcion();
+			switch (opcion) {
+			case 1:
+				mostrarPacienteByDni();
+				break;
+			case 2:
+				addPaciente();
+				break;
+			case 3:
+				getAllPacientes();
+				break;
+			case 4:
+				deletePaciente();
+				break;
+			case 5:
+				updatePaciente();
+				break;
+			case 6:
+				buscarPorNombre();
+				break;
+			case 7:
+				anadirDatoExtra();
+				break;
+			case 0:
+				fin = true;
+				break;
+			default:
+				System.out.println("Solo números entre 1 y 7");
+			}
+		} while (fin == false);
 	}
 
 	private void mostrarPacienteByDni() {
@@ -25,55 +55,64 @@ public class PacienteController {
 	}
 
 	private void getAllPacientes() {
-		pacienteRepositoryImpl = new PacienteRepositoryImpl();
 		List<Document> pacientes = pacienteRepositoryImpl.findAll();
-		String prettyJson;
-		pacienteView = new PacienteView();
-		for (Document paciente : pacientes) {
-			prettyJson = pacienteView.pretty(paciente.toJson());
-			System.out.println(prettyJson);
-		}
+		pacienteView.mostrar(pacientes.toString());
 	}
 
-	public Optional<Document> findByDni() {
+	private Optional<Document> findByDni() {
 		String dni = pacienteView.findByDNI();
-		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni).or(null);
+		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 		return paciente;
 	}
 
-	public void addPaciente() {
+	private void addPaciente() {
 		Document nuevoPaciente = pacienteView.addPaciente();
-		pacienteRepositoryImpl = new PacienteRepositoryImpl();
 		Boolean guardado = pacienteRepositoryImpl.save(nuevoPaciente);
 		pacienteView.mostrar(guardado ? "El paciente ha sido guardado correctamente" : "El paciente no se ha guardado");
 	}
 
-	public void deletePaciente() {
+	private void deletePaciente() {
 		String dni = pacienteView.findByDNI();
 		Boolean borrado = pacienteRepositoryImpl.delete(dni);
 		pacienteView.mostrar(borrado ? "El paciente ha sido borrado correctamente" : "El paciente no se ha borrado");
 	}
 
-	public void buscarPorNombre() {
-		String nombre = pacienteView.findByNombre();
-		List<Document> pacientes = pacienteRepositoryImpl.findByNombre(nombre);
-		boolean vacio = pacientes.isEmpty();
-		pacienteView.mostrar(vacio ? mostrarPrettyListaNombres(nombre, pacientes)
-				: "No se encontraron pacientes con el nombre: " + nombre);
-		if (pacientes.isEmpty()) {
-			System.out.println("No se encontraron pacientes con el nombre: " + nombre);
-		} else {
-			mostrarPrettyListaNombres(nombre, pacientes);
+	private void updatePaciente() {
+		Optional<Document> paciente = findByDni();
+		ArrayList<ArrayList<String>> recogerDatos = pacienteView.update();
+		ArrayList<String> atributos = recogerDatos.get(0);
+		ArrayList<String> valores = recogerDatos.get(1);
+		for (int i = 0; i < atributos.size(); i++) {
+			Boolean actualizado = pacienteRepositoryImpl.update(paciente, atributos.get(i), valores.get(i));
+			pacienteView.mostrar(
+					actualizado ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
 		}
 	}
 
-	private String mostrarPrettyListaNombres(String nombre, List<Document> pacientes) {
-		StringBuilder prettyJson = new StringBuilder();
-		prettyJson.append("Pacientes con el nombre ").append(nombre).append(":\n");
-		for (Document paciente : pacientes) {
-			prettyJson.append(pacienteView.pretty(paciente.toJson())).append("\n");
-		}
-		return prettyJson.toString();
+	private void buscarPorNombre() {
+	    String nombre = pacienteView.findByNombre();
+	    List<Document> pacientes = pacienteRepositoryImpl.findByNombre(nombre);
+	    boolean vacio = pacientes.isEmpty();
+	    pacienteView.mostrar(vacio ? "No se encontraron pacientes con el nombre: " + nombre : pacientes.toString());
 	}
+
+	private void anadirDatoExtra() {
+		Optional<Document> paciente = findByDni();
+		ArrayList<ArrayList<String>> recogerDatos = pacienteView.update();
+		ArrayList<String> atributos = recogerDatos.get(0);
+		ArrayList<String> valores = recogerDatos.get(1);
+		Boolean actualizado = pacienteRepositoryImpl.update(paciente, atributos.get(0), valores.get(0));
+		pacienteView.mostrar(
+				actualizado ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
+	}
+
+//	private String mostrarPrettyListaNombres(String nombre, List<Document> pacientes) {
+//		StringBuilder prettyJson = new StringBuilder();
+//		prettyJson.append("Pacientes con el nombre ").append(nombre).append(":\n");
+//		for (Document paciente : pacientes) {
+//			prettyJson.append(pacienteView.pretty(paciente.toJson())).append("\n");
+//		}
+//		return prettyJson.toString();
+//	}
 
 }

@@ -15,19 +15,33 @@ import io.IO;
 import model.Paciente;
 
 public class PacienteView {
-	final List<String> opciones = List.of("1.- Mostrar pacientes", "2.- Añadir paciente", "3.- Modificar paciente",
-			"4.- Eliminar paciente", "5.- Buscar paciente por dni", "0.- Salir");
+	final List<String> opciones = List.of("1. Mostrar Paciente por DNI", "2. Añadir paciente",
+			"3. Mostrar todos los Pacientes", "4. Eliminar paciente", "5. Actualizar Paciente", "6. Buscar por nombre",
+			"7. Atributo nuevo", "0. Salir");
+
+	public int getOpcion() {
+		IO.println("Opciones: ");
+		for (String opcion : opciones) {
+			IO.println(opcion);
+		}
+		return IO.readInt();
+	}
 
 	public Document addPaciente() {
-		Document paciente, hisorialMedico = null;
-		paciente = anadirVariablesObligatorias();
+		Document paciente = anadirVariablesObligatorias();
+		Document hisorialMedico = new Document();
 		anadirVariables(hisorialMedico);
 		paciente.append("Historial_Medico", hisorialMedico);
+		IO.println("Quieres añadir algun atributo nuevo?(s/n)");
+		char opcionAtributoNuevo = IO.readChar();
+		if (opcionAtributoNuevo == 's') {
+			atributoNuevo(paciente);
+		}
 		return paciente;
 	}
 
 	private void anadirVariables(Document hisorialMedico) {
-		List<Document> enfermedades = null;
+		List<Document> enfermedades = new ArrayList<>();
 		IO.println("¿Desea ingresar el historial médico? (s/n)");
 		char opcionHistorialMedico = IO.readChar();
 		if (opcionHistorialMedico == 's') {
@@ -59,7 +73,7 @@ public class PacienteView {
 				input = IO.readNombre();
 				detalles.append("Tratamiento", input);
 				System.out.println("Ingrese los medicamentos:");
-				List<String> medicamentos = IO.readList(); // Suponiendo que tienes un método para leer listas
+				List<String> medicamentos = IO.readList();
 				detalles.append("Medicamentos", medicamentos);
 				System.out.println("Ingrese el informe:");
 				input = IO.readNombre();
@@ -98,7 +112,7 @@ public class PacienteView {
 		int altura, peso;
 		Document paciente;
 		IO.println("Ingrese el dni del nuevo paciente:");
-		dni = IO.readNombre();
+		dni = IO.readDni();
 		IO.println("Ingrese el nombre paciente:");
 		nombre = IO.readNombre();
 		IO.println("Ingrese el apellidos paciente:");
@@ -108,7 +122,7 @@ public class PacienteView {
 		IO.println("Ingrese el sexo paciente:");
 		sexo = IO.readSexo();
 		IO.println("Ingrese el lugar de nacimiento paciente:");
-		lugarNacimiento = IO.readFecha();
+		lugarNacimiento = IO.readString();
 		IO.println("Ingrese la Altura paciente:");
 		altura = IO.readInt();
 		IO.println("Ingrese el peso paciente:");
@@ -126,8 +140,7 @@ public class PacienteView {
 		return paciente;
 	}
 
-	private Document atributoNuevo() {
-		Document paciente = null;
+	private void atributoNuevo(Document paciente) {
 		do {
 			IO.println("¿Desea ingresar un atributo-valor nuevo? (s/n)");
 			char opcionNuevoAtributoValor = IO.readChar();
@@ -142,7 +155,6 @@ public class PacienteView {
 				break;
 			}
 		} while (true);
-		return paciente;
 	}
 
 	public String[] buscarPorValor() {
@@ -190,10 +202,11 @@ public class PacienteView {
 		}
 	}
 
-	public void update() {
+	public ArrayList<ArrayList<String>> update() {
 		String valor, atributo;
 		ArrayList<String> atributos = new ArrayList<>();
-
+		ArrayList<String> valores = new ArrayList<>();
+		ArrayList<ArrayList<String>> devolver = new ArrayList<>();
 		do {
 			System.out.println("Introduce el nombre del atributo que quieres actualizar (o 'salir' para terminar):");
 			atributo = IO.readString();
@@ -201,10 +214,13 @@ public class PacienteView {
 			if (!atributo.equals("salir")) {
 				System.out.println("Introduce el nuevo valor para " + atributo + ":");
 				valor = IO.readString();
-				atributos.add(atributo + ": " + valor);
+				atributos.add(atributo);
+				valores.add(valor);
 			}
-
 		} while (!atributo.equals("salir"));
+		devolver.add(atributos);
+		devolver.add(valores);
+		return devolver;
 	}
 
 	public void mostrar(String mensaje) {
