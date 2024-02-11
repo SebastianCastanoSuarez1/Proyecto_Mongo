@@ -51,6 +51,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		Document result = collection.find(filter).first();
 		return Optional.ofNullable(result);
 	}
+	
+
 
 	@Override
 	public Boolean save(Document entity) {
@@ -76,14 +78,14 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	public List<Document> findByNombre(String nombre) {
-		System.out.println("Buscando por nombre: " + nombre); // Mensaje de depuración
+		//System.out.println("Buscando por nombre: " + nombre); // Mensaje de depuración
 
 		Bson filter = eq("Nombre", nombre);
 		Bson projectionFields = Projections.excludeId();
 
 		List<Document> results = collection.find(filter).projection(projectionFields).into(new ArrayList<>());
 
-		System.out.println("Resultados encontrados: " + results.size()); // Mensaje de depuración
+		//System.out.println("Resultados encontrados: " + results.size()); // Mensaje de depuración
 		return results;
 	}
 
@@ -103,5 +105,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			return false;
 		}
 	}
+
 
 }

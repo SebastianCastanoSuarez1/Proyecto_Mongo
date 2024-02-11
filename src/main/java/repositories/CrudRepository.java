@@ -13,4 +13,5 @@ public interface CrudRepository<T, id> {
 	Optional<Document> findById(String id);
 
 	Boolean delete(String dni);
+	
 }
