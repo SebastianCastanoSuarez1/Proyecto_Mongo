@@ -100,7 +100,7 @@ public class VentanaOpcionAnadir extends JFrame {
 			}
 		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnSalir.setBounds(239, 166, 171, 26);
+		btnSalir.setBounds(239, 161, 171, 34);
 		contentPane.add(btnSalir);
 	}
 }

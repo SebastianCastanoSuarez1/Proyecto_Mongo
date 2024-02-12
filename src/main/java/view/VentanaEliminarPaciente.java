@@ -16,13 +16,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import repositories.PacientesRepositories.PacienteRepositoryImpl;
+import controller.Controller_Interfaz;
 
 public class VentanaEliminarPaciente extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
+	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 
 	JFormattedTextField formattedDNI;
 	JLabel lblDNI;
@@ -78,7 +78,7 @@ public class VentanaEliminarPaciente extends JFrame {
 	    				if(btnEliminar == e.getSource()) {
 	    					String dni = formattedDNI.getText().toString();
 	    				
-	    					Boolean eliminado = pacienteRepositoryImpl.delete(dni);
+	    					Boolean eliminado = controllerInterfaz.eliminarPaciente(dni);
 	    					
 	    					if(eliminado == true) {
 	    						textFieldMensaje.setText("Paciente con DNI " + dni + " eliminado con exito");

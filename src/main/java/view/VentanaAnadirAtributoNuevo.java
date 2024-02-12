@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.Optional;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,8 +20,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.bson.Document;
 
-import repositories.PacientesRepositories.PacienteRepositoryImpl;
-import javax.swing.JFormattedTextField;
+import controller.Controller_Interfaz;
 
 
 
@@ -34,7 +34,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 	JLabel lblValor;
 	JButton btnCancelar;
 	JButton btnAceptar;
-	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
+	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	private JLabel lblDNI;
 	private JFormattedTextField formattedDni;
 	private JButton btnComprobar;
@@ -125,9 +125,9 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnAceptar == e.getSource()) {
-					Optional<Document> pacientes = pacienteRepositoryImpl.findById(formattedDni.getText().toString());
+					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText().toString());
 					if(pacientes.isPresent()) {
-						Boolean anadido =pacienteRepositoryImpl.update(pacientes,textFieldNombreAtributo.getText(), textFieldValorAtributo.getText());
+						Boolean anadido =controllerInterfaz.actualizarPaciente(pacientes,textFieldNombreAtributo.getText(), textFieldValorAtributo.getText());
 						textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
 
 					}else {
@@ -149,7 +149,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 		btnComprobar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnComprobar == e.getSource()) {
-					Optional<Document> pacientes = pacienteRepositoryImpl.findById(formattedDni.getText());
+					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText());
 					
 					if(pacientes.isPresent()) {
 						lblAtributoANadir.setVisible(true);

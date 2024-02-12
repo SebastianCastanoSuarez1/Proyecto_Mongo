@@ -22,7 +22,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.bson.Document;
 
-import repositories.PacientesRepositories.PacienteRepositoryImpl;
+import controller.Controller_Interfaz;
 
 
 
@@ -55,8 +55,8 @@ public class VentanaAgregarPaciente extends JFrame {
 	private JComboBox<String> comboBoxTipo;
 	JButton btnAceptar;
 	JButton btnCancelar;
-	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
-	private final PacienteView pacienteView = new PacienteView();
+
+	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	private JTextField textFieldAñadido;
 	VentanaOpcionAnadir voa;
 	VentanaPrincipal vp;
@@ -274,11 +274,11 @@ public class VentanaAgregarPaciente extends JFrame {
 		 	public void actionPerformed(ActionEvent e) {
 		 		if(btnAceptar == e.getSource()) {
 		 			
-		 			Document paciente = pacienteView.anadirPacientenuevo(formattedDni.getText(), textFieldNombre.getText(), textFieldApellidos.getText(), 
+		 			Document paciente = controllerInterfaz.anadirPacientenuevo(formattedDni.getText(), textFieldNombre.getText(), textFieldApellidos.getText(), 
 		 					formattedFechaNacimiento.getText(), comboBoxSexo.getSelectedItem().toString(), textFieldLugarNacimiento.getText(),textFieldAltura.getText(),
 		 					textFieldPeso.getText(),comboBoxGrupoSanguineo.getSelectedItem().toString(), comboBoxEnfermedad.getSelectedItem().toString(), comboBoxTipo.getSelectedItem().toString());
-		 			Boolean anadido = pacienteRepositoryImpl.save(paciente);
-		 			textFieldAñadido.setText(pacienteView.mostrar(anadido ? "El paciente ha sido añadido con exito" : "El paciente no se ha añadido"));
+		 			Boolean anadido = controllerInterfaz.salvarPaciente(paciente);
+		 			textFieldAñadido.setText(controllerInterfaz.mostrar(anadido ? "El paciente ha sido añadido con exito" : "El paciente no se ha añadido"));
 		 		
 		 		}
 		 	}

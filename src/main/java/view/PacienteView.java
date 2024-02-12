@@ -209,14 +209,17 @@ public class PacienteView {
 	public String mostrarPacientes(List<Document> pacientes) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String pretty = "";
-		for (Document doc : pacientes) {
-			String json = gson.toJson(doc);
-			pretty += pretty(json) + "\n";
+		if (pacientes.isEmpty()) {
 			
+		} else {
+			for (Document doc : pacientes) {
+				String json = gson.toJson(doc);
+				
+				pretty += pretty(json) + "\n";
+			}
 		}
 		return pretty;
 	}
-	
 
 	public ArrayList<ArrayList<String>> update() {
 		String valor, atributo;

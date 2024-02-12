@@ -22,7 +22,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.bson.Document;
 
-import repositories.PacientesRepositories.PacienteRepositoryImpl;
+import controller.Controller_Interfaz;
 
 public class VentanaModificarPaciente extends JFrame {
 
@@ -32,7 +32,7 @@ public class VentanaModificarPaciente extends JFrame {
 	private JLabel lblValor;
 	JFormattedTextField formattedDni;
 	private JButton btnComprobar;
-	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
+	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	MaskFormatter mascara;
 	JLabel lblDNI;
 	JLabel lblTexto;
@@ -122,7 +122,8 @@ public class VentanaModificarPaciente extends JFrame {
 		btnComprobar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnComprobar == e.getSource()) {
-					Optional<Document> pacientes = pacienteRepositoryImpl.findById(formattedDni.getText());
+					String dni = formattedDni.getText().toString();
+					Optional<Document> pacientes = controllerInterfaz.comprobarDni(dni);
 					
 					if(pacientes.isPresent()) {
 						lblTexto.setVisible(true);
@@ -158,55 +159,107 @@ public class VentanaModificarPaciente extends JFrame {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnAceptar == e.getSource()) {
+					String dni = formattedDni.getText().toString();
 					String atributo = comboBoxAtributo.getSelectedItem().toString();
-					
+					String valor = textFieldValorAtributo.getText();
 			 		switch (atributo) {
 					case "Dni":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						if(textFieldValorAtributo.getText().matches("^[0-9]{8}[A-Z]$")) {
+							controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+							textFieldMensaje.setText("Paciente actualizado correctamente");
+						}else {
+							textFieldMensaje.setText("El dni debe tener este formato :00000000A");
+						}
+						
 						break;
 					case "Nombre":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Apellidos":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Fecha_Nacimiento":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						if(textFieldValorAtributo.getText().matches("^(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/((19|20)\\\\d\\\\d)$")) {
+							controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+							textFieldMensaje.setText("Paciente actualizado correctamente");
+
+						}else {
+							textFieldMensaje.setText("La fecha debe tener este fomrato 00/00/0000");
+
+						}
 						break;
 					case "Sexo":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Lugar_Nacimiento":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Altura":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Peso":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Grupo_Sanguineo":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						if(textFieldValorAtributo.getText().matches("^(?i)(0|[AB]|AB)[+-]$")) {
+							controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+							textFieldMensaje.setText("Paciente actualizado correctamente");
+
+						}else {
+							textFieldMensaje.setText("El grupo sanguineo debe ser 0+/-, A+/-, B+/-, AB+/-");
+
+						}
 						break;
 					case "Enfermedad":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					case "Tipo":
-						valorAtributoNuevo(atributo);
+						lblValor.setVisible(true);
+						textFieldValorAtributo.setVisible(true);
+						controllerInterfaz.valorAtributoNuevo(dni,atributo,valor);
+						textFieldMensaje.setText("Paciente actualizado correctamente");
+
 						break;
 					default:
 						break;
 					}
 				}
 			}
-			protected void valorAtributoNuevo(String atributo) {
-				Optional<Document> pacientes;
-				lblValor.setVisible(true);
-				textFieldValorAtributo.setVisible(true);
-				pacientes = pacienteRepositoryImpl.findById(formattedDni.getText());
-				Boolean actualizado = pacienteRepositoryImpl.update(pacientes, atributo, textFieldValorAtributo.getText().toString());
-				textFieldMensaje.setText(actualizado ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
-			}
+			
 		});
 		btnAceptar.setBounds(233, 181, 98, 21);
 		contentPane.add(btnAceptar);
