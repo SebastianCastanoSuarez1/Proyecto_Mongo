@@ -1,10 +1,12 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.bson.Document;
 
+import io.IO;
 import model.Paciente;
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
 import view.PacienteView;
@@ -71,6 +73,69 @@ public class Controller_Interfaz {
 		return mensaje;
 	}
 	
+	public void anadirVariables(Document hisorialMedico) {
+		List<Document> enfermedades = new ArrayList<>();
+		IO.println("¿Desea ingresar el historial médico? (s/n)");
+		char opcionHistorialMedico = IO.readChar();
+		if (opcionHistorialMedico == 's') {
+			anadirAlergenos(hisorialMedico);
+			anadirMedicamentosRecientes(hisorialMedico);
+			anadirEnfermedades(hisorialMedico, enfermedades);
+		}
+
+	}
+
+	private void anadirEnfermedades(Document hisorialMedico, List<Document> enfermedades) {
+		IO.println("¿Desea ingresar al historial médico las enfermedades que ha tenido en su vida? (s/n)");
+		char opcionEnfermedades = IO.readChar();
+		if (opcionEnfermedades == 's') {
+			String input;
+			System.out.println("Ingrese el número de enfermedades del paciente:");
+			int numEnfermedades = IO.readInt();
+			for (int i = 0; i < numEnfermedades; i++) {
+				Document enfermedad = new Document();
+				System.out.println("Ingrese la enfermedad " + (i + 1) + ":");
+				input = IO.readNombre();
+				enfermedad.append("Enfermedad", input);
+				System.out.println("Ingrese la fecha de la enfermedad " + (i + 1) + ":");
+				input = IO.readFecha();
+				enfermedad.append("Fecha", input);
+				System.out.println("Ingrese los detalles de la enfermedad " + (i + 1) + ":");
+				Document detalles = new Document();
+				System.out.println("Ingrese el tratamiento:");
+				input = IO.readNombre();
+				detalles.append("Tratamiento", input);
+				System.out.println("Ingrese los medicamentos:");
+				List<String> medicamentos = IO.readList();
+				detalles.append("Medicamentos", medicamentos);
+				System.out.println("Ingrese el informe:");
+				input = IO.readNombre();
+				detalles.append("Informe", input);
+				enfermedad.append("Detalles", detalles);
+				enfermedades.add(enfermedad);
+			}
+			hisorialMedico.append("Enfermedades", enfermedades);
+		}
+	}
+
+	private Optional<Document> anadirMedicamentosRecientes(Document historialMedico, String dni) {
+		Optional<Document> pacientes;
+		pacientes = pacienteRepositoryImpl.findById(dni);
+		historialMedico.append();
+		return pacientes;
+
+		
+	}
+
+	private void anadirAlergenos(Document hisorialMedico) {
+		List<String> alergenos;
+		IO.println("¿Desea ingresar al historial médico alergias? (s/n)");
+		char opcionAlergias = IO.readChar();
+		if (opcionAlergias == 's') {
+			alergenos = IO.readList();
+			hisorialMedico.append("Alergenos", alergenos);
+		}
+	}
 	public Boolean actualizarPaciente(Optional<Document> pacientes, String nombreAtributo, String valorAtributo) {
 		return pacienteRepositoryImpl.update(pacientes,nombreAtributo, valorAtributo);
 	}
