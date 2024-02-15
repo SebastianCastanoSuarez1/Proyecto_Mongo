@@ -117,7 +117,7 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 				switch(opcion) {
 				case "Si":
 					textFieldAlergenos.setVisible(true);
-					Document alegergenos = textFieldAlergenos.getText().toString();
+					//Optional<Documents> pacientes
 					break;
 				case "No":
 					textFieldAlergenos.setVisible(false);

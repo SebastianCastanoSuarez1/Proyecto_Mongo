@@ -73,17 +73,17 @@ public class Controller_Interfaz {
 		return mensaje;
 	}
 	
-	public void anadirVariables(Document hisorialMedico) {
-		List<Document> enfermedades = new ArrayList<>();
-		IO.println("¿Desea ingresar el historial médico? (s/n)");
-		char opcionHistorialMedico = IO.readChar();
-		if (opcionHistorialMedico == 's') {
-			anadirAlergenos(hisorialMedico);
-			anadirMedicamentosRecientes(hisorialMedico);
-			anadirEnfermedades(hisorialMedico, enfermedades);
-		}
-
-	}
+//	public void anadirVariables(Document hisorialMedico) {
+//		List<Document> enfermedades = new ArrayList<>();
+//		IO.println("¿Desea ingresar el historial médico? (s/n)");
+//		char opcionHistorialMedico = IO.readChar();
+//		if (opcionHistorialMedico == 's') {
+//			anadirAlergenos(hisorialMedico);
+//			anadirMedicamentosRecientes(hisorialMedico);
+//			anadirEnfermedades(hisorialMedico, enfermedades);
+//		}
+//
+//	}
 
 	private void anadirEnfermedades(Document hisorialMedico, List<Document> enfermedades) {
 		IO.println("¿Desea ingresar al historial médico las enfermedades que ha tenido en su vida? (s/n)");
@@ -118,11 +118,9 @@ public class Controller_Interfaz {
 		}
 	}
 
-	private Optional<Document> anadirMedicamentosRecientes(Document historialMedico, String dni) {
-		Optional<Document> pacientes;
-		pacientes = pacienteRepositoryImpl.findById(dni);
-		historialMedico.append();
-		return pacientes;
+	private Boolean anadirMedicamentosRecientes(Optional<Document> pacientes, String atributo, String valor) {
+		return pacienteRepositoryImpl.update(pacientes,atributo, valor);
+
 
 		
 	}
