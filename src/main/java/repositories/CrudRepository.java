@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.bson.Document;
 
+import com.mongodb.client.result.DeleteResult;
+
 public interface CrudRepository<T, id> {
 	List<Document> findAll();
 
@@ -12,6 +14,6 @@ public interface CrudRepository<T, id> {
 
 	Optional<Document> findById(String id);
 
-	Boolean delete(String dni);
+	DeleteResult delete(String dni);
 	
 }

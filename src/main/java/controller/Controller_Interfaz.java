@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.bson.Document;
 
+import com.mongodb.client.result.DeleteResult;
+
 import io.IO;
 import model.Paciente;
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
@@ -14,12 +16,13 @@ import view.PacienteView;
 public class Controller_Interfaz {
 	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
 	private final PacienteView pacienteView = new PacienteView();
-	
+
 	public Optional<Document> findByDni(String dni) {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
+
 		return paciente;
 	}
-	
+
 	public String getAllPacientes() {
 		List<Document> pacientes = pacienteRepositoryImpl.findAll();
 		if (pacientes.isEmpty()) {
@@ -27,63 +30,68 @@ public class Controller_Interfaz {
 		} else {
 			return pacienteView.mostrarPacientes(pacientes);
 		}
-		
+
 	}
-	
+
 	public String findPacienteByDNombre(String nombre) {
 		List<Document> pacientes = pacienteRepositoryImpl.findByNombre(nombre);
 		return pacienteView.mostrarPacientes(pacientes);
 	}
-	
-	public Optional<Document> comprobarDni(String dni){
+
+	public Optional<Document> comprobarDni(String dni) {
 		Optional<Document> pacientes = pacienteRepositoryImpl.findById(dni);
 		return pacientes;
 	}
-	public String valorAtributoNuevo(String dni,String atributo, String valor) {
+
+	public String valorAtributoNuevo(String dni, String atributo, String valor) {
 		Optional<Document> pacientes;
-		
+
 		pacientes = pacienteRepositoryImpl.findById(dni);
 		Boolean actualizado = pacienteRepositoryImpl.update(pacientes, atributo, valor);
 		return actualizado ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado";
 	}
-	
-	public Document anadirPacientenuevo(String dni, String nombre, String apellidos
-			, String fechaNacimiento, String sexo, String lugarNacimiento, 
-			String altura, String peso, String grupoSanguineo, String enfermedad, String tipo) {
+
+	public Document anadirPacientenuevo(String dni, String nombre, String apellidos, String fechaNacimiento,
+			String sexo, String lugarNacimiento, String altura, String peso, String grupoSanguineo, String enfermedad,
+			String tipo) {
 		Document paciente;
 		paciente = new Paciente().append("Dni", dni).append("Nombre", nombre).append("Apellidos", apellidos)
 				.append("Fecha_Nacimiento", fechaNacimiento).append("Sexo", sexo)
 				.append("Lugar_Nacimiento", lugarNacimiento).append("Altura", altura).append("Peso", peso)
 				.append("Grupo_Sanguineo", grupoSanguineo).append("Enfermedad", enfermedad).append("Tipo", tipo);
-		
+
 		return paciente;
 	}
-	
+
 	public Boolean salvarPaciente(Document paciente) {
 		return pacienteRepositoryImpl.save(paciente);
 	}
-	
-	
 
-	public String mostrar(Optional<Document> paciente) {
-		return paciente.orElse(null) + "";
+	public String findPacienteByAttribute(String atributo, String valor) {
+		List<Document> pacientes = pacienteRepositoryImpl.findByAttribute(atributo, valor);
+		return pacienteView.mostrarPacientes(pacientes);
+	}
+
+	public String mostrar(Optional<Document> pacientes) {
+		String ensenar = pacienteView.mostrar(pacientes);
+		return ensenar;
 	}
 
 	public String mostrar(String mensaje) {
 		return mensaje;
 	}
-	
-//	public void anadirVariables(Document hisorialMedico) {
-//		List<Document> enfermedades = new ArrayList<>();
-//		IO.println("¿Desea ingresar el historial médico? (s/n)");
-//		char opcionHistorialMedico = IO.readChar();
-//		if (opcionHistorialMedico == 's') {
-//			anadirAlergenos(hisorialMedico);
-//			anadirMedicamentosRecientes(hisorialMedico);
+
+	public void anadirVariables(Optional<Document> pacientes, String[] hisorialMedico) {
+		List<Document> enfermedades = new ArrayList<>();
+		IO.println("¿Desea ingresar el historial médico? (s/n)");
+		char opcionHistorialMedico = IO.readChar();
+		if (opcionHistorialMedico == 's') {
+			anadirAlergenos(pacientes, hisorialMedico);
+//			anadirMedicamentosRecientes(pacientes,hisorialMedico);
 //			anadirEnfermedades(hisorialMedico, enfermedades);
-//		}
-//
-//	}
+		}
+
+	}
 
 	private void anadirEnfermedades(Document hisorialMedico, List<Document> enfermedades) {
 		IO.println("¿Desea ingresar al historial médico las enfermedades que ha tenido en su vida? (s/n)");
@@ -118,27 +126,28 @@ public class Controller_Interfaz {
 		}
 	}
 
-	private Boolean anadirMedicamentosRecientes(Optional<Document> pacientes, String atributo, String valor) {
-		return pacienteRepositoryImpl.update(pacientes,atributo, valor);
+	private void anadirMedicamentosRecientes(Optional<Document> pacientes, Document hisorialMedico) {
+		List<String> medicamentosRecientes;
+		IO.println("¿Desea ingresar al historial médico los medicamentos recientes? (s/n)");
+		char opcionMedicamentosRecientes = IO.readChar();
+		if (opcionMedicamentosRecientes == 's') {
+			medicamentosRecientes = IO.readList();
+			hisorialMedico.append("Medicamentos_Recientes", medicamentosRecientes);
 
-
-		
-	}
-
-	private void anadirAlergenos(Document hisorialMedico) {
-		List<String> alergenos;
-		IO.println("¿Desea ingresar al historial médico alergias? (s/n)");
-		char opcionAlergias = IO.readChar();
-		if (opcionAlergias == 's') {
-			alergenos = IO.readList();
-			hisorialMedico.append("Alergenos", alergenos);
 		}
 	}
-	public Boolean actualizarPaciente(Optional<Document> pacientes, String nombreAtributo, String valorAtributo) {
-		return pacienteRepositoryImpl.update(pacientes,nombreAtributo, valorAtributo);
+
+	public Document anadirAlergenos(Optional<Document> pacientes, String[] alergenos) {
+		Document historialMedico = new Document();
+		return historialMedico.append("Alergenos", alergenos);
+
 	}
 
-	public Boolean eliminarPaciente(String dni) {
+	public Boolean actualizarPaciente(Optional<Document> pacientes, String nombreAtributo, String valorAtributo) {
+		return pacienteRepositoryImpl.update(pacientes, nombreAtributo, valorAtributo);
+	}
+
+	public DeleteResult eliminarPaciente(String dni) {
 		return pacienteRepositoryImpl.delete(dni);
 	}
 

@@ -139,10 +139,10 @@ public class PacienteView {
 				.append("Grupo Sanguineo", grupo_Sanguineo).append("Enfermedad", enfermedad).append("Tipo", tipo);
 		return paciente;
 	}
-	
-	public Document anadirPacientenuevo(String dni, String nombre, String apellidos
-			, String fechaNacimiento, String sexo, String lugarNacimiento, 
-			String altura, String peso, String grupoSanguineo, String enfermedad, String tipo) {
+
+	public Document anadirPacientenuevo(String dni, String nombre, String apellidos, String fechaNacimiento,
+			String sexo, String lugarNacimiento, String altura, String peso, String grupoSanguineo, String enfermedad,
+			String tipo) {
 		Document paciente;
 		paciente = new Paciente().append("Dni", dni).append("Nombre", nombre).append("Apellidos", apellidos)
 				.append("Fecha_Nacimiento", fechaNacimiento).append("Sexo", sexo)
@@ -167,7 +167,6 @@ public class PacienteView {
 			}
 		} while (true);
 	}
-
 
 	public String[] buscarPorValor() {
 		String[] busqueda = new String[2];
@@ -210,13 +209,26 @@ public class PacienteView {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String pretty = "";
 		if (pacientes.isEmpty()) {
-			
+
 		} else {
 			for (Document doc : pacientes) {
 				String json = gson.toJson(doc);
-				
+
 				pretty += pretty(json) + "\n";
 			}
+		}
+		return pretty;
+	}
+
+	public String mostrar(Optional<Document> pacientes) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String pretty = "";
+		if (pacientes.isEmpty()) {
+
+		} else {
+			Document doc1 = pacientes.get();
+			String json = gson.toJson(doc1);
+			pretty += pretty(json) + "\n";
 		}
 		return pretty;
 	}
@@ -244,10 +256,6 @@ public class PacienteView {
 
 	public String mostrar(String mensaje) {
 		return mensaje;
-	}
-
-	public String mostrar(Optional<Document> depart) {
-		return depart.orElse(null) + "";
 	}
 
 }

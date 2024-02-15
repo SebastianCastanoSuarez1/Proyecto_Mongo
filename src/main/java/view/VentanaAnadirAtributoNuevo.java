@@ -125,7 +125,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnAceptar == e.getSource()) {
-					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText().toString());
+					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText().toString()) ;
 					if(pacientes.isPresent()) {
 						Boolean anadido =controllerInterfaz.actualizarPaciente(pacientes,textFieldNombreAtributo.getText(), textFieldValorAtributo.getText());
 						textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");

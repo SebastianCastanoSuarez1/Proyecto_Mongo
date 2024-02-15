@@ -176,7 +176,7 @@ public class VentanaAgregarPaciente extends JFrame {
 	            e.printStackTrace();
 	        }
 		 comboBoxSexo = new JComboBox<String>();
-		 comboBoxSexo.setModel(new DefaultComboBoxModel<String>(new String[] { "Masculino", "Femenino" }));
+		 comboBoxSexo.setModel(new DefaultComboBoxModel<String>(new String[] { "","Masculino", "Femenino" }));
 		 comboBoxSexo.setBounds(62, 72, 95, 21);
 		 contentPane.add(comboBoxSexo);
 		 
@@ -219,7 +219,7 @@ public class VentanaAgregarPaciente extends JFrame {
 		 contentPane.add(textFieldPeso);
 		 
 		 comboBoxGrupoSanguineo = new JComboBox<String>();
-		 comboBoxGrupoSanguineo.setModel(new DefaultComboBoxModel<String>(new String[] { "A+", "A-", "B+","B-","AB+","AB-","0+","0-" }));
+		 comboBoxGrupoSanguineo.setModel(new DefaultComboBoxModel<String>(new String[] { "","A+", "A-", "B+","B-","AB+","AB-","0+","0-" }));
 		 comboBoxGrupoSanguineo.setBounds(125, 135, 95, 21);
 		 contentPane.add(comboBoxGrupoSanguineo);
 		 
@@ -252,11 +252,13 @@ public class VentanaAgregarPaciente extends JFrame {
 				 case "Cardiocirculatoria":
 					 comboBoxTipo.setModel(new DefaultComboBoxModel<String>(new String[] { "Anemia", "Hemofilia", "Leucemia","Infarto de miocardio","Angina de pecho","Insuficiencia cardiaca","Trastornos del ritmo cardiaco"}));
 					 break;
+				default:
+					 break;
 				 
 				 }
 		 	}
 		 });
-		 comboBoxEnfermedad.setModel(new DefaultComboBoxModel<String>(new String[] { "Mental", "Hormonal", "Respiratoria","Cancer","Dermatologica","Digestiva","Oftalmologica","Cardiocirculatoria" }));
+		 comboBoxEnfermedad.setModel(new DefaultComboBoxModel<String>(new String[] { "","Mental", "Hormonal", "Respiratoria","Cancer","Dermatologica","Digestiva","Oftalmologica","Cardiocirculatoria" }));
 		 comboBoxEnfermedad.setBounds(312, 135, 119, 21);
 		 contentPane.add(comboBoxEnfermedad);
 		 

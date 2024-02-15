@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JButton;
@@ -28,11 +29,14 @@ public class VentanaMostrarPaciente extends JFrame {
 	JButton btnMostrarPorNombre;
 	JButton btnMostrarPorDni;
 	JLabel lblMensaje;
-	private JTextField textFieldEscribir;
+	private JTextField textFieldEscribirDni;
 	private JButton btnCancelar;
 	VentanaPrincipal vp;
 	JScrollPane scrollPaneMostrar;
 	JTextArea textAreaMostrar;
+	private JTextField textFieldEscribirNombre;
+	private JTextField textFieldAtributo;
+	private JTextField textFieldValor;
 
 	/**
 	 * Launch the application.
@@ -55,7 +59,7 @@ public class VentanaMostrarPaciente extends JFrame {
 	 */
 	public VentanaMostrarPaciente() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 547, 400);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -64,14 +68,14 @@ public class VentanaMostrarPaciente extends JFrame {
 
 		lblMensaje = new JLabel("Introduzca el DNI\r\n");
 		lblMensaje.setVisible(false);
-		lblMensaje.setBounds(235, 31, 125, 13);
+		lblMensaje.setBounds(235, 11, 125, 13);
 		contentPane.add(lblMensaje);
 
-		textFieldEscribir = new JTextField();
-		textFieldEscribir.setVisible(false);
-		textFieldEscribir.setBounds(235, 54, 167, 23);
-		contentPane.add(textFieldEscribir);
-		textFieldEscribir.setColumns(10);
+		textFieldEscribirDni = new JTextField();
+		textFieldEscribirDni.setVisible(false);
+		textFieldEscribirDni.setBounds(235, 35, 167, 23);
+		contentPane.add(textFieldEscribirDni);
+		textFieldEscribirDni.setColumns(10);
 
 		btnMostrarTodo = new JButton("Mostrar todo");
 		btnMostrarTodo.addActionListener(new ActionListener() {
@@ -79,8 +83,6 @@ public class VentanaMostrarPaciente extends JFrame {
 				if (btnMostrarTodo == e.getSource()) {
 					textAreaMostrar.setText("");
 					textAreaMostrar.setText(controllerInterfaz.getAllPacientes());
-					
-				
 
 				}
 			}
@@ -94,20 +96,17 @@ public class VentanaMostrarPaciente extends JFrame {
 				if (btnMostrarPorNombre == e.getSource()) {
 					lblMensaje.setText("Introduzca el nombre");
 					lblMensaje.setVisible(true);
-					textFieldEscribir.setVisible(true);
-					textFieldEscribir.setText("");
+					textFieldEscribirNombre.setVisible(true);
+					textFieldEscribirNombre.setText("");
 					textAreaMostrar.setText("");
-					textFieldEscribir.addActionListener(new ActionListener() {
+					textFieldEscribirNombre.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							String nombre = textFieldEscribir.getText();
+							String nombre = textFieldEscribirNombre.getText();
 							if (!nombre.equals("")) {
-								lblMensaje.setVisible(false);
-								textFieldEscribir.setVisible(false);
-								
 								textAreaMostrar.setText(controllerInterfaz.findPacienteByDNombre(nombre));
 
-							}else {
+							} else {
 								textAreaMostrar.setText("El nombre debe de tener caracteres");
 							}
 						}
@@ -124,21 +123,21 @@ public class VentanaMostrarPaciente extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				lblMensaje.setText("Introduzca el DNI");
 				lblMensaje.setVisible(true);
-				textFieldEscribir.setVisible(true);
-				textFieldEscribir.setText("");
+				textFieldEscribirDni.setVisible(true);
+				textFieldEscribirDni.setText("");
 				textAreaMostrar.setText("");
-				textFieldEscribir.addActionListener(new ActionListener() {
+				textFieldEscribirDni.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						String dni = textFieldEscribir.getText();
+						String dni = textFieldEscribirDni.getText();
 						if (dni.matches("^\\d{8}[A-Z]$")) {
 							lblMensaje.setVisible(false);
-							textFieldEscribir.setVisible(false);
+							textFieldEscribirDni.setVisible(false);
 							Optional<Document> pacientes = controllerInterfaz.findByDni(dni);
-							if(pacientes.isPresent()) {
-								
+
+							if (pacientes.isPresent()) {
 								textAreaMostrar.setText(controllerInterfaz.mostrar(pacientes));
-							}else {
+							} else {
 								textAreaMostrar.setText("El paciente con DNI " + dni + " no existe");
 							}
 						} else {
@@ -160,15 +159,63 @@ public class VentanaMostrarPaciente extends JFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setBounds(20, 208, 149, 21);
+		btnCancelar.setBounds(20, 273, 149, 21);
 		contentPane.add(btnCancelar);
-		
+
 		scrollPaneMostrar = new JScrollPane();
-		scrollPaneMostrar.setBounds(207, 11, 227, 239);
+		scrollPaneMostrar.setBounds(207, 91, 296, 259);
 		contentPane.add(scrollPaneMostrar);
-		
+
 		textAreaMostrar = new JTextArea();
 		scrollPaneMostrar.setViewportView(textAreaMostrar);
+		
+		textFieldEscribirNombre = new JTextField();
+		textFieldEscribirNombre.setVisible(false);
+		textFieldEscribirNombre.setBounds(235, 36, 167, 20);
+		contentPane.add(textFieldEscribirNombre);
+		textFieldEscribirNombre.setColumns(10);
+		
+		textFieldAtributo = new JTextField();
+		
+		textFieldAtributo.setVisible(false);
+		textFieldAtributo.setBounds(235, 36, 167, 20);
+		contentPane.add(textFieldAtributo);
+		textFieldAtributo.setColumns(10);
+		
+		textFieldValor = new JTextField();
+		textFieldValor.setVisible(false);
+		textFieldValor.setBounds(235, 35, 167, 23);
+		contentPane.add(textFieldValor);
+		textFieldValor.setColumns(10);
+		
+		JButton btnBuscarAtributo = new JButton("Buscar por atributo");
+		btnBuscarAtributo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblMensaje.setText("Introduzca el nombre del atributo");
+				textFieldAtributo.setText("");
+				textFieldAtributo.setVisible(true);
+				textFieldValor.setText("");
+				textFieldValor.setVisible(true);
+				textFieldAtributo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String atributo = textFieldAtributo.getText();
+						String valor = textFieldValor.getText();
+						if (!atributo.matches(" ") && !valor.matches("")) {
+							lblMensaje.setVisible(false);
+							textFieldEscribirDni.setVisible(false);
+							textAreaMostrar.setText(controllerInterfaz.findPacienteByAttribute(atributo, valor));
+
+
+						} else {
+							textAreaMostrar.setText("El dni debe tener este formato :00000000A ");
+						}
+					}
+				});
+				
+			}
+		});
+		btnBuscarAtributo.setBounds(20, 222, 149, 21);
+		contentPane.add(btnBuscarAtributo);
 
 	}
 }

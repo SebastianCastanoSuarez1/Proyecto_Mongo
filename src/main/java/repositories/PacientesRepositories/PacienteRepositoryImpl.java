@@ -1,6 +1,7 @@
 package repositories.PacientesRepositories;
 
 import static com.mongodb.client.model.Filters.eq;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.result.DeleteResult;
 
 import db.MongoDB;
 
@@ -45,14 +47,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return documentList;
 	}
 
-	@Override
-	public Optional<Document> findById(String id) {
-		Bson filter = eq(dni, id);
-		Document result = collection.find(filter).first();
-		return Optional.ofNullable(result);
-	}
-	
-
 
 	@Override
 	public Boolean save(Document entity) {
@@ -64,30 +58,34 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			return false;
 		}
 	}
-
 	@Override
-	public Boolean delete(String dni) {
-		try {
-			Bson filter = eq("Dni", dni);
-			collection.deleteOne(filter);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+	public Optional<Document> findById(String id) {
+		Bson filter = eq(dni, id);
+		Bson projectionFields = Projections.excludeId();
+		Document result = collection.find(filter).projection(projectionFields).first();
+		return Optional.ofNullable(result);
 	}
 
 	public List<Document> findByNombre(String nombre) {
-		//System.out.println("Buscando por nombre: " + nombre); // Mensaje de depuración
-
+		
 		Bson filter = eq("Nombre", nombre);
 		Bson projectionFields = Projections.excludeId();
-
+		
 		List<Document> results = collection.find(filter).projection(projectionFields).into(new ArrayList<>());
-
-		//System.out.println("Resultados encontrados: " + results.size()); // Mensaje de depuración
 		return results;
 	}
+	@Override
+	public DeleteResult delete(String dni) {
+	    DeleteResult resultado = null;
+	    try {
+	        Bson filter = eq("Dni", dni);
+	        resultado = collection.deleteOne(filter);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return resultado;
+	}
+
 
 	public Boolean update(Optional<Document> paciente, String atributo, String valor) {
 		try {
@@ -104,6 +102,13 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public List<Document> findByAttribute(String atributo, String valor) {
+		Bson filter = eq(atributo, valor);
+		Bson projectionFields = Projections.excludeId();
+		List<Document> results = collection.find(filter).projection(projectionFields).into(new ArrayList<>());
+		return results;
 	}
 
 

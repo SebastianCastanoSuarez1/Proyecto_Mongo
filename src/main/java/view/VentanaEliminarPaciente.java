@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import com.mongodb.client.result.DeleteResult;
+
 import controller.Controller_Interfaz;
 
 public class VentanaEliminarPaciente extends JFrame {
@@ -31,6 +33,7 @@ public class VentanaEliminarPaciente extends JFrame {
 	JButton btnCancelar;
 	private JTextField textFieldMensaje;
 	VentanaPrincipal vp;
+
 	/**
 	 * Launch the application.
 	 */
@@ -59,58 +62,57 @@ public class VentanaEliminarPaciente extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		lblDNI = new JLabel("Introduzca DNI\r\n");
 		lblDNI.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblDNI.setBounds(24, 65, 126, 31);
 		contentPane.add(lblDNI);
-		
-		 try {
-	            mascara = new MaskFormatter("########?");
-	            mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	            formattedDNI = new JFormattedTextField(mascara);
-	            formattedDNI.setBounds(160, 67, 144, 32);
-	    		contentPane.add(formattedDNI);
-	    		
-	    		btnEliminar = new JButton("Eliminar\r\n");
-	    		btnEliminar.addActionListener(new ActionListener() {
-	    			public void actionPerformed(ActionEvent e) {
-	    				if(btnEliminar == e.getSource()) {
-	    					String dni = formattedDNI.getText().toString();
-	    				
-	    					Boolean eliminado = controllerInterfaz.eliminarPaciente(dni);
-	    					
-	    					if(eliminado == true) {
-	    						textFieldMensaje.setText("Paciente con DNI " + dni + " eliminado con exito");
-	    					}else {
-	    						textFieldMensaje.setText("Paciente con DNI " + dni + " no existe");
 
-	    					}
-	    				}
-	    			}
-	    		});
-	    		btnEliminar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	    		btnEliminar.setBounds(220, 169, 119, 39);
-	    		contentPane.add(btnEliminar);
-	    		
-	    		btnCancelar = new JButton("Cancelar\r\n");
-	    		btnCancelar.addActionListener(new ActionListener() {
-	    			public void actionPerformed(ActionEvent e) {
-	    				vp = new VentanaPrincipal();
-	    				vp.setVisible(true);
-	    				dispose();
-	    			}
-	    		});
-	    		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	    		btnCancelar.setBounds(49, 169, 119, 39);
-	    		contentPane.add(btnCancelar);
-	    		
-	    		textFieldMensaje = new JTextField();
-	    		textFieldMensaje.setBounds(0, 234, 436, 19);
-	    		contentPane.add(textFieldMensaje);
-	    		textFieldMensaje.setColumns(10);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
+		try {
+			mascara = new MaskFormatter("########?");
+			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+			formattedDNI = new JFormattedTextField(mascara);
+			formattedDNI.setBounds(160, 67, 144, 32);
+			contentPane.add(formattedDNI);
+
+			btnEliminar = new JButton("Eliminar\r\n");
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (btnEliminar == e.getSource()) {
+						String dni = formattedDNI.getText().toString();
+
+						DeleteResult eliminado = controllerInterfaz.eliminarPaciente(dni);
+						if (eliminado.getDeletedCount() > 0) {
+							textFieldMensaje.setText("Paciente con dni: " + dni + " ha sido eliminado");
+						} else {
+							textFieldMensaje.setText("Paciente con dni:" + dni + " no ha sido eliminado");
+						}
+
+					}
+				}
+			});
+			btnEliminar.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnEliminar.setBounds(220, 169, 119, 39);
+			contentPane.add(btnEliminar);
+
+			btnCancelar = new JButton("Cancelar\r\n");
+			btnCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					vp = new VentanaPrincipal();
+					vp.setVisible(true);
+					dispose();
+				}
+			});
+			btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnCancelar.setBounds(49, 169, 119, 39);
+			contentPane.add(btnCancelar);
+
+			textFieldMensaje = new JTextField();
+			textFieldMensaje.setBounds(0, 234, 436, 19);
+			contentPane.add(textFieldMensaje);
+			textFieldMensaje.setColumns(10);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 }

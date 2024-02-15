@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.bson.Document;
 
+import com.mongodb.client.result.DeleteResult;
+
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
 import view.PacienteView;
 
@@ -73,8 +75,8 @@ public class PacienteController {
 
 	private void deletePaciente() {
 		String dni = pacienteView.findByDNI();
-		Boolean borrado = pacienteRepositoryImpl.delete(dni);
-		pacienteView.mostrar(borrado ? "El paciente ha sido borrado correctamente" : "El paciente no se ha borrado");
+		DeleteResult borrado = pacienteRepositoryImpl.delete(dni);
+		pacienteView.mostrar(borrado != null ? "El paciente ha sido borrado correctamente" : "El paciente no se ha borrado");
 	}
 
 	private void updatePaciente() {
