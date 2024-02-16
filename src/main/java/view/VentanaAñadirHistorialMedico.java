@@ -24,28 +24,30 @@ import org.bson.Document;
 
 import controller.Controller_Interfaz;
 
-
 public class VentanaAñadirHistorialMedico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	MaskFormatter mascara;
-	private JLabel lblDNI;
-	private JFormattedTextField formattedDni;
-	private JButton btnComprobar;
-	private JTextField textFieldMensaje;
-	JComboBox<String> comboBoxSiNo;
+	JLabel lblDNI;
+	JFormattedTextField formattedDni;
+	JButton btnComprobar;
+	JTextField textFieldMensaje;
+	JComboBox<String> comboBoxAlergenos;
 	JLabel lblAlergenos;
-	private JTextField textFieldAlergenos;
-	private JLabel lblElFormatoEs;
-	private JLabel lblQuieresAadirEnfermedades;
-	private JComboBox<String> comboBoxSiNo_1;
-	JComboBox <String>comboBoxSiNo_3;
-	VentanaEnfermedades ve;
+	JTextField textFieldAlergenos;
+	JLabel lblElFormatoEs;
+	JLabel lblQuieresAadirEnfermedades;
+	JComboBox<String> comboBoxEnfermedades;
+	JComboBox<String> comboBoxMedicamentos;
+	VentanaEnfermedades ven;
+	JButton btnAceptarEnfermedades;
+	JLabel lblMedicamentos;
+	JTextField textFieldMedicamentos;
 	JButton btnAceptar;
-	private JLabel lblMedicamentos;
-	private JTextField textFieldMedicamentos;
+	JButton btnCancelar;
+
 	/**
 	 * Launch the application.
 	 */
@@ -66,6 +68,7 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaAñadirHistorialMedico() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 499, 380);
 		contentPane = new JPanel();
@@ -96,9 +99,9 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 						lblElFormatoEs.setVisible(true);
 						lblQuieresAadirEnfermedades.setVisible(true);
 						lblMedicamentos.setVisible(true);
-						comboBoxSiNo.setVisible(true);
-						comboBoxSiNo_1.setVisible(true);
-						comboBoxSiNo_3.setVisible(true);
+						comboBoxAlergenos.setVisible(true);
+						comboBoxEnfermedades.setVisible(true);
+						comboBoxMedicamentos.setVisible(true);
 						
 					} else {
 						String mensaje = "El paciente con DNI " + formattedDni.getText() + " no existe ";
@@ -126,20 +129,14 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 		lblAlergenos.setBounds(10, 97, 184, 20);
 		contentPane.add(lblAlergenos);
 
-		comboBoxSiNo = new JComboBox<String>();
-		comboBoxSiNo.setVisible(false);
-		comboBoxSiNo.addActionListener(new ActionListener() {
+		comboBoxAlergenos = new JComboBox<String>();
+		comboBoxAlergenos.setVisible(false);
+		comboBoxAlergenos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String dni = formattedDni.getText().toString();
-				String opcion = comboBoxSiNo.getSelectedItem().toString();
+				String opcion = comboBoxAlergenos.getSelectedItem().toString();
 				switch (opcion) {
 				case "Si":
-					
 					textFieldAlergenos.setVisible(true);
-					Optional<Document> pacientes = controllerInterfaz.findByDni(dni);
-					String alergias = textFieldAlergenos.getText();
-					String[] a = alergias.split(" ");
-					controllerInterfaz.anadirAlergenos(pacientes, a);
 					break;
 				case "No":
 					textFieldAlergenos.setVisible(false);
@@ -151,9 +148,9 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 			
 			
 		});
-		comboBoxSiNo.setModel(new DefaultComboBoxModel<String>(new String[] { "Si", "No" }));
-		comboBoxSiNo.setBounds(204, 98, 50, 22);
-		contentPane.add(comboBoxSiNo);
+		comboBoxAlergenos.setModel(new DefaultComboBoxModel<String>(new String[] { "Si", "No" }));
+		comboBoxAlergenos.setBounds(204, 98, 50, 22);
+		contentPane.add(comboBoxAlergenos);
 
 		textFieldAlergenos = new JTextField();
 		textFieldAlergenos.setVisible(false);
@@ -173,23 +170,26 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 		lblQuieresAadirEnfermedades.setBounds(10, 154, 217, 20);
 		contentPane.add(lblQuieresAadirEnfermedades);
 		
-		comboBoxSiNo_1 = new JComboBox<String>();
-		comboBoxSiNo_1.setVisible(false);
-		comboBoxSiNo_1.setModel(new DefaultComboBoxModel<String>(new String[] { "Si", "No" }));
-		comboBoxSiNo_1.addActionListener(new ActionListener() {
+		comboBoxEnfermedades = new JComboBox<String>();
+		comboBoxEnfermedades.setVisible(false);
+		comboBoxEnfermedades.setModel(new DefaultComboBoxModel<String>(new String[] { "Si", "No" }));
+		comboBoxEnfermedades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String dni = formattedDni.getText().toString();
-				String opcion = comboBoxSiNo_1.getSelectedItem().toString();
+				String opcion = comboBoxEnfermedades.getSelectedItem().toString();
 				switch (opcion) {
 				case "Si":
-		
-					btnAceptar.setVisible(true);
-					
-					
-				break;
+					btnAceptarEnfermedades.setVisible(true);
+					btnAceptarEnfermedades.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if(btnAceptarEnfermedades == e.getSource()) {
+								ven= new VentanaEnfermedades();
+								ven.setVisible(true);
+							}
+						}
+					});
+					break;
 				case "No":
-					btnAceptar.setVisible(false);
-
+					btnAceptarEnfermedades.setVisible(false);
 					break;
 				}
 			}
@@ -197,21 +197,14 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 			
 			
 		});
-		comboBoxSiNo_1.setBounds(239, 155, 50, 22);
-		contentPane.add(comboBoxSiNo_1);
+		comboBoxEnfermedades.setBounds(239, 155, 50, 22);
+		contentPane.add(comboBoxEnfermedades);
 		
-		btnAceptar = new JButton("Aceptar");
-		btnAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(btnAceptar == e.getSource()) {
-					ve = new VentanaEnfermedades();
-					ve.setVisible(true);
-				}
-			}
-		});
-		btnAceptar.setVisible(false);
-		btnAceptar.setBounds(328, 155, 89, 23);
-		contentPane.add(btnAceptar);
+		btnAceptarEnfermedades = new JButton("Aceptar");
+		btnAceptarEnfermedades.setVisible(false);
+		btnAceptarEnfermedades.setBounds(328, 155, 89, 23);
+		contentPane.add(btnAceptarEnfermedades);
+
 		
 		lblMedicamentos = new JLabel("Quieres añadir medicamentos ");
 		lblMedicamentos.setVisible(false);
@@ -219,12 +212,11 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 		lblMedicamentos.setBounds(10, 205, 217, 14);
 		contentPane.add(lblMedicamentos);
 		
-		comboBoxSiNo_3 = new JComboBox<String>();
-		comboBoxSiNo_3.setVisible(false);
-		comboBoxSiNo_3.addActionListener(new ActionListener() {
+		comboBoxMedicamentos = new JComboBox<String>();
+		comboBoxMedicamentos.setVisible(false);
+		comboBoxMedicamentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String dni = formattedDni.getText().toString();
-				String opcion = comboBoxSiNo_3.getSelectedItem().toString();
+				String opcion = comboBoxMedicamentos.getSelectedItem().toString();
 				switch (opcion) {
 				case "Si":
 					textFieldMedicamentos.setVisible(true);
@@ -235,15 +227,48 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 				}
 			}
 		});
-		comboBoxSiNo_3.setModel(new DefaultComboBoxModel<String>(new String[] { "Si", "No" }));
-		comboBoxSiNo_3.setBounds(239, 203, 50, 20);
-		contentPane.add(comboBoxSiNo_3);
+		comboBoxMedicamentos.setModel(new DefaultComboBoxModel<String>(new String[] { "Si", "No" }));
+		comboBoxMedicamentos.setBounds(239, 203, 50, 20);
+		contentPane.add(comboBoxMedicamentos);
 		
 		textFieldMedicamentos = new JTextField();
 		textFieldMedicamentos.setVisible(false);
 		textFieldMedicamentos.setBounds(299, 204, 155, 20);
 		contentPane.add(textFieldMedicamentos);
 		textFieldMedicamentos.setColumns(10);
+		
+		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText());
+		        String alergenos = textFieldAlergenos.getText();
+		        String medicamentos = textFieldMedicamentos.getText();
+		        String[] historialMedicoAlergenos = alergenos.split(" "); // Dividir en palabras, no en caracteres
+		        String[] historialMedicoMedicamentos = medicamentos.split(" ");
+		        Document enfermedades = ven.crearDocumentosEnfermedades();
+		        // Dividir en palabras, no en caracteres
+		        if(btnAceptar == e.getSource()) {
+		            Boolean anadido = controllerInterfaz.anadirVariables(pacientes, historialMedicoAlergenos, historialMedicoMedicamentos,enfermedades);
+					textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
+
+		        }
+		    }
+		});
+		btnAceptar.setBounds(277, 264, 89, 23);
+		contentPane.add(btnAceptar);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnCancelar == e.getSource()) {
+					VentanaOpcionAnadir voa = new VentanaOpcionAnadir();
+					voa.setVisible(true);
+					dispose();
+				}
+			}
+		});
+		btnCancelar.setBounds(138, 264, 89, 23);
+		contentPane.add(btnCancelar);
 
 	}
 }

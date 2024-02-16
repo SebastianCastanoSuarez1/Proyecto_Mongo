@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JButton;
@@ -37,7 +36,7 @@ public class VentanaMostrarPaciente extends JFrame {
 	private JTextField textFieldEscribirNombre;
 	private JTextField textFieldAtributo;
 	private JTextField textFieldValor;
-
+	JButton btnBuscarAtributo;
 	/**
 	 * Launch the application.
 	 */
@@ -58,6 +57,7 @@ public class VentanaMostrarPaciente extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaMostrarPaciente() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 547, 400);
 		contentPane = new JPanel();
@@ -68,7 +68,7 @@ public class VentanaMostrarPaciente extends JFrame {
 
 		lblMensaje = new JLabel("Introduzca el DNI\r\n");
 		lblMensaje.setVisible(false);
-		lblMensaje.setBounds(235, 11, 125, 13);
+		lblMensaje.setBounds(235, 11, 190, 13);
 		contentPane.add(lblMensaje);
 
 		textFieldEscribirDni = new JTextField();
@@ -188,26 +188,40 @@ public class VentanaMostrarPaciente extends JFrame {
 		contentPane.add(textFieldValor);
 		textFieldValor.setColumns(10);
 		
-		JButton btnBuscarAtributo = new JButton("Buscar por atributo");
+		btnBuscarAtributo = new JButton("Buscar por atributo");
 		btnBuscarAtributo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblMensaje.setText("Introduzca el nombre del atributo");
+				lblMensaje.setVisible(true);
 				textFieldAtributo.setText("");
+				textFieldEscribirDni.setVisible(false);
+				textFieldEscribirNombre.setVisible(false);
+				textFieldValor.setVisible(false);
 				textFieldAtributo.setVisible(true);
-				textFieldValor.setText("");
-				textFieldValor.setVisible(true);
 				textFieldAtributo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String atributo = textFieldAtributo.getText();
-						String valor = textFieldValor.getText();
-						if (!atributo.matches(" ") && !valor.matches("")) {
-							lblMensaje.setVisible(false);
-							textFieldEscribirDni.setVisible(false);
-							textAreaMostrar.setText(controllerInterfaz.findPacienteByAttribute(atributo, valor));
+						if (!atributo.matches(" ")) {
+							lblMensaje.setText("Introduzca el valor del atributo");
+							textFieldValor.setText("");
+							textFieldValor.setVisible(true);
+							textFieldAtributo.setVisible(false);
+							textFieldValor.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									String valor = textFieldValor.getText();
+									if(!valor.matches(" ")) {
+										
+										textAreaMostrar.setText(controllerInterfaz.findPacienteByAttribute(atributo, valor));
+									}else {
+										textAreaMostrar.setText("El valor debe tener este caracteres");
+									}
+									
+								}
+							});
 
 
 						} else {
-							textAreaMostrar.setText("El dni debe tener este formato :00000000A ");
+							textAreaMostrar.setText("El atributo debe tener este caracteres");
 						}
 					}
 				});

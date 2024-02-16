@@ -80,6 +80,7 @@ public class VentanaAgregarPaciente extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaAgregarPaciente() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 527, 353);
 		contentPane = new JPanel();

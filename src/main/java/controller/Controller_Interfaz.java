@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,66 +82,62 @@ public class Controller_Interfaz {
 		return mensaje;
 	}
 
-	public void anadirVariables(Optional<Document> pacientes, String[] hisorialMedico) {
-		List<Document> enfermedades = new ArrayList<>();
-		IO.println("¿Desea ingresar el historial médico? (s/n)");
-		char opcionHistorialMedico = IO.readChar();
-		if (opcionHistorialMedico == 's') {
-			anadirAlergenos(pacientes, hisorialMedico);
-//			anadirMedicamentosRecientes(pacientes,hisorialMedico);
-//			anadirEnfermedades(hisorialMedico, enfermedades);
-		}
-
-	}
-
-	private void anadirEnfermedades(Document hisorialMedico, List<Document> enfermedades) {
-		IO.println("¿Desea ingresar al historial médico las enfermedades que ha tenido en su vida? (s/n)");
-		char opcionEnfermedades = IO.readChar();
-		if (opcionEnfermedades == 's') {
-			String input;
-			System.out.println("Ingrese el número de enfermedades del paciente:");
-			int numEnfermedades = IO.readInt();
-			for (int i = 0; i < numEnfermedades; i++) {
-				Document enfermedad = new Document();
-				System.out.println("Ingrese la enfermedad " + (i + 1) + ":");
-				input = IO.readNombre();
-				enfermedad.append("Enfermedad", input);
-				System.out.println("Ingrese la fecha de la enfermedad " + (i + 1) + ":");
-				input = IO.readFecha();
-				enfermedad.append("Fecha", input);
-				System.out.println("Ingrese los detalles de la enfermedad " + (i + 1) + ":");
-				Document detalles = new Document();
-				System.out.println("Ingrese el tratamiento:");
-				input = IO.readNombre();
-				detalles.append("Tratamiento", input);
-				System.out.println("Ingrese los medicamentos:");
-				List<String> medicamentos = IO.readList();
-				detalles.append("Medicamentos", medicamentos);
-				System.out.println("Ingrese el informe:");
-				input = IO.readNombre();
-				detalles.append("Informe", input);
-				enfermedad.append("Detalles", detalles);
-				enfermedades.add(enfermedad);
-			}
-			hisorialMedico.append("Enfermedades", enfermedades);
-		}
-	}
-
-	private void anadirMedicamentosRecientes(Optional<Document> pacientes, Document hisorialMedico) {
-		List<String> medicamentosRecientes;
-		IO.println("¿Desea ingresar al historial médico los medicamentos recientes? (s/n)");
-		char opcionMedicamentosRecientes = IO.readChar();
-		if (opcionMedicamentosRecientes == 's') {
-			medicamentosRecientes = IO.readList();
-			hisorialMedico.append("Medicamentos_Recientes", medicamentosRecientes);
-
-		}
-	}
-
-	public Document anadirAlergenos(Optional<Document> pacientes, String[] alergenos) {
+	public Boolean anadirVariables(Optional<Document> pacientes, String[] alergeno, String[] medicamento,
+			Document enfermedades) {
+		Document contenido = new Document();
 		Document historialMedico = new Document();
-		return historialMedico.append("Alergenos", alergenos);
+		List<String> alergenosList = Arrays.asList(alergeno); // Convertir array en lista
+		List<String> medicamentosList = Arrays.asList(medicamento); // Convertir array en lista
+		contenido.append("Alergenos", alergenosList);
+		contenido.append("Medicamentos", medicamentosList);
+		contenido.append("Enfermedades", enfermedades);
+		historialMedico.append("Historial_Medico", contenido);
+		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, historialMedico);
+	}
 
+	public Document crearDocumentoEnfermedades(Optional<Document> pacientes, String enfermedad, String fecha,
+			String[] historialMedicoMedicamentos, String tratamiento, String informe) {
+		Document enfermedades = new Document();
+		Document detalles = new Document();
+
+		enfermedades.append("Enfermedad", enfermedad);
+		enfermedades.append("Fecha", fecha);
+
+		List<String> medicamentosList = Arrays.asList(historialMedicoMedicamentos);
+
+		detalles.append("Tratamiento", tratamiento);
+		detalles.append("Medicamentos", medicamentosList);
+		detalles.append("Informe", informe);
+		enfermedades.append("Detalles", detalles);
+		return enfermedades;
+	}
+
+	public Boolean agregarEnfermedad(Optional<Document> pacientes, Document enfermedades) {
+	
+
+		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, enfermedades);
+		// Aquí puedes agregar el código para insertar los documentos 'enfermedades' y
+		// 'detalles' en tu base de datos MongoDB
+	}
+
+	public Boolean anadirMedicamentosRecientes(Optional<Document> pacientes, String[] medicamento) {
+		Document medicamentos = new Document();
+		List<String> alergenosList = Arrays.asList(medicamento); // Convertir array en lista
+		medicamentos.append("Alergenos", alergenosList);
+		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, medicamentos);
+	}
+
+	public Optional<Document> anadirLista(String dni, String atributo, String[] lista) {
+		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
+		paciente.get().append(atributo, lista);
+		return paciente;
+	}
+
+	public Boolean anadirAlergenos(Optional<Document> pacientes, String[] alergeno) {
+		Document alergenos = new Document();
+		List<String> alergenosList = Arrays.asList(alergeno); // Convertir array en lista
+		alergenos.append("Alergenos", alergenosList);
+		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, alergenos);
 	}
 
 	public Boolean actualizarPaciente(Optional<Document> pacientes, String nombreAtributo, String valorAtributo) {
@@ -149,6 +146,46 @@ public class Controller_Interfaz {
 
 	public DeleteResult eliminarPaciente(String dni) {
 		return pacienteRepositoryImpl.delete(dni);
+	}
+
+	public Optional<Document> anadirComponente(String dni, String atributoComponente, String[] atributo,
+			String[] valores, String[] atributoLista, ArrayList<String[]> listas) {
+		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
+		Document componente = new Document();
+		anadirElementosComponente(atributo, valores, componente);
+		anadirListaComponente(atributoLista, listas, componente);
+		paciente.get().append(atributoComponente, componente);
+		return paciente;
+	}
+
+	public Optional<Document> anadirComponente(String dni, String atributoComponente, String[] atributo,
+			String[] valores) {
+		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
+		Document componente = new Document();
+		anadirElementosComponente(atributo, valores, componente);
+		paciente.get().append(atributoComponente, componente);
+		return paciente;
+	}
+
+	public Boolean anadirComponente(String dni,String atributoComponente, String[] atributoLista, ArrayList<String[]> listas) {
+		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
+		Document componente = new Document();
+		anadirListaComponente(atributoLista, listas, componente);
+		paciente.get().append(atributoComponente, componente);
+		Boolean anadido = pacienteRepositoryImpl.update(paciente, dni, componente);
+		return anadido;
+	}
+
+	private void anadirElementosComponente(String[] atributo, String[] valores, Document paciente) {
+		for (int i = 0; i < atributo.length; i++) {
+			paciente.append(atributo[i], valores[i]);
+		}
+	}
+
+	private void anadirListaComponente(String[] atributoLista, ArrayList<String[]> listas, Document paciente) {
+		for (int i = 0; i < listas.size(); i++) {
+			paciente.append(atributoLista[i], listas.get(i));
+		}
 	}
 
 }

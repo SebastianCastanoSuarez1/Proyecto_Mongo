@@ -62,6 +62,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaAnadirAtributoNuevo() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 511, 377);
 		contentPane = new JPanel();
