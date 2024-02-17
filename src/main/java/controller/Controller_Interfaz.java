@@ -9,7 +9,6 @@ import org.bson.Document;
 
 import com.mongodb.client.result.DeleteResult;
 
-import io.IO;
 import model.Paciente;
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
 import view.PacienteView;
@@ -116,8 +115,7 @@ public class Controller_Interfaz {
 	
 
 		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, enfermedades);
-		// Aquí puedes agregar el código para insertar los documentos 'enfermedades' y
-		// 'detalles' en tu base de datos MongoDB
+
 	}
 
 	public Boolean anadirMedicamentosRecientes(Optional<Document> pacientes, String[] medicamento) {
@@ -127,11 +125,6 @@ public class Controller_Interfaz {
 		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, medicamentos);
 	}
 
-	public Optional<Document> anadirLista(String dni, String atributo, String[] lista) {
-		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
-		paciente.get().append(atributo, lista);
-		return paciente;
-	}
 
 	public Boolean anadirAlergenos(Optional<Document> pacientes, String[] alergeno) {
 		Document alergenos = new Document();
@@ -147,6 +140,13 @@ public class Controller_Interfaz {
 	public DeleteResult eliminarPaciente(String dni) {
 		return pacienteRepositoryImpl.delete(dni);
 	}
+	public Boolean anadirLista(Optional<Document> pacientes, String atributo, String[] lista) {
+		Document atributos = new Document();
+		List<String> alergenosList = Arrays.asList(lista); // Convertir array en lista
+		atributos.append(atributo, alergenosList);
+		return pacienteRepositoryImpl.update(pacientes, atributo, atributos);
+	}
+
 
 	public Optional<Document> anadirComponente(String dni, String atributoComponente, String[] atributo,
 			String[] valores, String[] atributoLista, ArrayList<String[]> listas) {
@@ -187,5 +187,4 @@ public class Controller_Interfaz {
 			paciente.append(atributoLista[i], listas.get(i));
 		}
 	}
-
 }

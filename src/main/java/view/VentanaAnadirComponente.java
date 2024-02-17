@@ -15,7 +15,12 @@ public class VentanaAnadirComponente extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	JButton btn_List;
+	JButton btn_Valor;
+	JButton btn_List_Valor;
+	JLabel lblNewLabelTitle;
+	JButton btnCancelar;
+	VentanaOpcionAnadir voa;
 	/**
 	 * Launch the application.
 	 */
@@ -45,7 +50,7 @@ public class VentanaAnadirComponente extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JButton btn_List = new JButton("Listas");
+		btn_List = new JButton("Listas");
 		btn_List.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaComponentesLista vc = new VentanaComponentesLista();
@@ -57,7 +62,7 @@ public class VentanaAnadirComponente extends JFrame {
 		btn_List.setBounds(155, 127, 114, 47);
 		contentPane.add(btn_List);
 
-		JButton btn_Valor = new JButton("Valores\r\n");
+		btn_Valor = new JButton("Valores\r\n");
 		btn_Valor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaComponentesValores vc = new VentanaComponentesValores();
@@ -68,7 +73,7 @@ public class VentanaAnadirComponente extends JFrame {
 		btn_Valor.setBounds(290, 127, 114, 47);
 		contentPane.add(btn_Valor);
 
-		JButton btn_List_Valor = new JButton("Listas y valores");
+		btn_List_Valor = new JButton("Listas y valores");
 		btn_List_Valor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaComponentesListasValores vc = new VentanaComponentesListasValores();
@@ -80,9 +85,21 @@ public class VentanaAnadirComponente extends JFrame {
 		btn_List_Valor.setBounds(20, 127, 114, 47);
 		contentPane.add(btn_List_Valor);
 
-		JLabel lblNewLabelTitle = new JLabel("Añadir componentes");
+		lblNewLabelTitle = new JLabel("Añadir componentes");
 		lblNewLabelTitle.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabelTitle.setBounds(137, 33, 224, 38);
 		contentPane.add(lblNewLabelTitle);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				voa = new VentanaOpcionAnadir();
+				voa.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCancelar.setBounds(155, 206, 114, 47);
+		contentPane.add(btnCancelar);
 	}
 }

@@ -119,7 +119,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			return false;
 		}
 	}	
-	public Boolean update(Optional<Document> paciente, String atributo, String[] valores) {
+	public Boolean update(Optional<Document> paciente, String atributo, List<String> valores) {
 		try {
 			if (paciente.isPresent()) {
 				Document filter = paciente.get();
