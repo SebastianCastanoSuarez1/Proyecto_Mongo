@@ -24,9 +24,7 @@ public class VentanaPrincipal extends JFrame {
 	VentanaMostrarPaciente vmp;
 	VentanaModificarPaciente vmop;
 	VentanaEliminarPaciente vep;
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
