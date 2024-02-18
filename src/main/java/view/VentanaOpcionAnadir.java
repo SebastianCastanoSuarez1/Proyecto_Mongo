@@ -25,6 +25,7 @@ public class VentanaOpcionAnadir extends JFrame {
 	VentanaPrincipal vp;
 	private JButton btnSalir;
 	private JButton btnAadirComponete;
+	VentanaLista vl;
 
 	/**
 	 * Launch the application.
@@ -126,5 +127,17 @@ public class VentanaOpcionAnadir extends JFrame {
 		btnAadirComponete.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnAadirComponete.setBounds(239, 161, 171, 34);
 		contentPane.add(btnAadirComponete);
+		
+		JButton btnAnadirLista = new JButton("Añadir lista");
+		btnAnadirLista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				vl = new VentanaLista();
+				vl.setVisible(true);
+				dispose();
+			}
+		});
+		btnAnadirLista.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnAnadirLista.setBounds(21, 226, 171, 34);
+		contentPane.add(btnAnadirLista);
 	}
 }

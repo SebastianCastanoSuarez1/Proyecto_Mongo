@@ -86,23 +86,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	    return resultado;
 	}
 
-
-	public Boolean update(Optional<Document> paciente, String atributo, String valor) {
-		try {
-
-			if (paciente.isPresent()) {
-				Document filter = paciente.get(); // filtro para seleccionar el documento a actualizar
-				Document update = new Document("$set", new Document(atributo, valor));
-				collection.updateOne(filter, update);
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 	public Boolean updateHistorialMedico(Optional<Document> paciente, Document historial) {
 		try {
 
@@ -134,11 +117,28 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			return false;
 		}
 	}
+	
+	public Boolean update(Optional<Document> paciente, String atributo, String valor) {
+		try {
+			
+			if (paciente.isPresent()) {
+				Document filter = paciente.get(); // filtro para seleccionar el documento a actualizar
+				Document update = new Document("$set", new Document(atributo, valor));
+				collection.updateOne(filter, update);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public Boolean update(Optional<Document> paciente, String atributo, Document valores) {
 		try {
 			if (paciente.isPresent()) {
 				Document filter = paciente.get();
-				Document update = new Document("$set", new Document(atributo, valores));
+				Document update = new Document("$set", new Document(atributo ,valores));
 				collection.updateOne(filter, update);
 				return true;
 			} else {

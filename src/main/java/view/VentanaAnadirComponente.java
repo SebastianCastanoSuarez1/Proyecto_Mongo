@@ -21,6 +21,7 @@ public class VentanaAnadirComponente extends JFrame {
 	JLabel lblNewLabelTitle;
 	JButton btnCancelar;
 	VentanaOpcionAnadir voa;
+	VentanaComponentesLista vl;
 	/**
 	 * Launch the application.
 	 */
@@ -53,8 +54,8 @@ public class VentanaAnadirComponente extends JFrame {
 		btn_List = new JButton("Listas");
 		btn_List.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaComponentesLista vc = new VentanaComponentesLista();
-				vc.setVisible(true);
+				vl = new VentanaComponentesLista();
+				vl.setVisible(true);
 				dispose();
 			}
 		});
@@ -63,6 +64,7 @@ public class VentanaAnadirComponente extends JFrame {
 		contentPane.add(btn_List);
 
 		btn_Valor = new JButton("Valores\r\n");
+		btn_Valor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_Valor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaComponentesValores vc = new VentanaComponentesValores();

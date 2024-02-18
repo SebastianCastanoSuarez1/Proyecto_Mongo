@@ -112,7 +112,6 @@ public class Controller_Interfaz {
 	}
 
 	public Boolean agregarEnfermedad(Optional<Document> pacientes, Document enfermedades) {
-	
 
 		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, enfermedades);
 
@@ -124,7 +123,6 @@ public class Controller_Interfaz {
 		medicamentos.append("Alergenos", alergenosList);
 		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, medicamentos);
 	}
-
 
 	public Boolean anadirAlergenos(Optional<Document> pacientes, String[] alergeno) {
 		Document alergenos = new Document();
@@ -140,6 +138,7 @@ public class Controller_Interfaz {
 	public DeleteResult eliminarPaciente(String dni) {
 		return pacienteRepositoryImpl.delete(dni);
 	}
+
 	public Boolean anadirLista(Optional<Document> pacientes, String atributo, String[] lista) {
 		Document atributos = new Document();
 		List<String> alergenosList = Arrays.asList(lista); // Convertir array en lista
@@ -147,32 +146,31 @@ public class Controller_Interfaz {
 		return pacienteRepositoryImpl.update(pacientes, atributo, atributos);
 	}
 
-
-	public Optional<Document> anadirComponente(String dni, String atributoComponente, String[] atributo,
-			String[] valores, String[] atributoLista, ArrayList<String[]> listas) {
+	public Boolean anadirComponente(String dni, String atributoComponente, String[] atributo, String[] valores,
+			String[] atributoLista, ArrayList<String[]> listas) {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 		Document componente = new Document();
 		anadirElementosComponente(atributo, valores, componente);
 		anadirListaComponente(atributoLista, listas, componente);
-		paciente.get().append(atributoComponente, componente);
-		return paciente;
+		Boolean anadido = pacienteRepositoryImpl.update(paciente, atributoComponente, componente);
+		return anadido;
 	}
 
-	public Optional<Document> anadirComponente(String dni, String atributoComponente, String[] atributo,
-			String[] valores) {
+	public Boolean anadirComponente(String dni, String atributoComponente, String[] atributo, String[] valores) {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 		Document componente = new Document();
 		anadirElementosComponente(atributo, valores, componente);
 		paciente.get().append(atributoComponente, componente);
-		return paciente;
+		Boolean anadido = pacienteRepositoryImpl.update(paciente, atributoComponente, componente);
+		return anadido;
 	}
 
-	public Boolean anadirComponente(String dni,String atributoComponente, String[] atributoLista, ArrayList<String[]> listas) {
+	public Boolean anadirComponente(String dni, String atributoComponente, String[] atributoLista,
+			ArrayList<String[]> listas) {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 		Document componente = new Document();
 		anadirListaComponente(atributoLista, listas, componente);
-		paciente.get().append(atributoComponente, componente);
-		Boolean anadido = pacienteRepositoryImpl.update(paciente, dni, componente);
+		Boolean anadido = pacienteRepositoryImpl.update(paciente, atributoComponente, componente);
 		return anadido;
 	}
 
@@ -183,8 +181,11 @@ public class Controller_Interfaz {
 	}
 
 	private void anadirListaComponente(String[] atributoLista, ArrayList<String[]> listas, Document paciente) {
-		for (int i = 0; i < listas.size(); i++) {
-			paciente.append(atributoLista[i], listas.get(i));
-		}
+	    for (int i = 0; i < listas.size()-1; i++) {
+	        String[] listaActual = listas.get(i); // Obtener la lista actual del índice i
+	        for (int j = 0; j < atributoLista.length && j < listaActual.length; j++) {// Separar los valores por espacio
+	            paciente.append(atributoLista[j], Arrays.asList(listaActual)); // Convertir a lista y agregar al documento
+	        }
+	    }
 	}
 }
