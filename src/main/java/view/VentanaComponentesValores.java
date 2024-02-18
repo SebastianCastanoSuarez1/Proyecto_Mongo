@@ -39,6 +39,8 @@ public class VentanaComponentesValores extends JFrame {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	private JTextField textFieldMensaje;
+	private JLabel lblAtributoPrincipal;
+	private JTextField textFieldAtributoPrincipal;
 
 	/**
 	 * Launch the application.
@@ -61,7 +63,7 @@ public class VentanaComponentesValores extends JFrame {
 	 */
 	public VentanaComponentesValores() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 480, 367);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,8 +78,8 @@ public class VentanaComponentesValores extends JFrame {
 					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText());
 
 					if (pacientes.isPresent()) {
-						lblAtributo.setVisible(true);
-						textFieldAtributo.setVisible(true);
+						lblAtributoPrincipal.setVisible(true);
+						textFieldAtributoPrincipal.setVisible(true);
 					} else {
 						String mensaje = "El paciente con DNI " + formattedDni.getText() + " no existe ";
 						JOptionPane.showMessageDialog(null, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -108,7 +110,7 @@ public class VentanaComponentesValores extends JFrame {
 		lblAtributo = new JLabel("Introduzca el nombre del atributo");
 		lblAtributo.setVisible(false);
 		lblAtributo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblAtributo.setBounds(20, 77, 218, 19);
+		lblAtributo.setBounds(20, 139, 218, 19);
 		contentPane.add(lblAtributo);
 		
 		textFieldAtributo = new JTextField();
@@ -125,36 +127,37 @@ public class VentanaComponentesValores extends JFrame {
 				}
 			}
 		});
-		textFieldAtributo.setBounds(245, 79, 137, 19);
+		textFieldAtributo.setBounds(245, 141, 137, 19);
 		contentPane.add(textFieldAtributo);
 		textFieldAtributo.setColumns(10);
 		
 		lblValores = new JLabel("Introduzca los valores del atributo\r\n");
 		lblValores.setVisible(false);
 		lblValores.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblValores.setBounds(20, 131, 218, 19);
+		lblValores.setBounds(20, 181, 218, 19);
 		contentPane.add(lblValores);
 		
 		textFieldValores = new JTextField();
 		textFieldValores.setVisible(false);
 		textFieldValores.setColumns(10);
-		textFieldValores.setBounds(245, 133, 137, 19);
+		textFieldValores.setBounds(245, 183, 137, 19);
 		contentPane.add(textFieldValores);
 		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String dni = formattedDni.getText();
+				String atributoPrincipal = textFieldAtributoPrincipal.getText();
 				String atributo = textFieldAtributo.getText();
 				String valores = textFieldValores.getText();
 				String[] componenteAtributo = atributo.split(" ");
 				String[] componenteValor = valores.split(" ");
-				Boolean anadido = controllerInterfaz.anadirComponente(dni, "ListaAtributos", componenteAtributo, componenteValor);
+				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, componenteAtributo, componenteValor);
 				textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
 
 			}
 		});
-		btnAceptar.setBounds(245, 190, 85, 27);
+		btnAceptar.setBounds(246, 245, 85, 27);
 		contentPane.add(btnAceptar);
 		
 		btnCancelar = new JButton("Cancelar");
@@ -166,12 +169,36 @@ public class VentanaComponentesValores extends JFrame {
 			}
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCancelar.setBounds(85, 189, 95, 27);
+		btnCancelar.setBounds(86, 244, 95, 27);
 		contentPane.add(btnCancelar);
 		
 		textFieldMensaje = new JTextField();
 		textFieldMensaje.setColumns(10);
-		textFieldMensaje.setBounds(10, 234, 408, 19);
+		textFieldMensaje.setBounds(10, 301, 408, 19);
 		contentPane.add(textFieldMensaje);
+		
+		lblAtributoPrincipal = new JLabel("Introduzca el atributo principal");
+		lblAtributoPrincipal.setVisible(false);
+		lblAtributoPrincipal.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAtributoPrincipal.setBounds(20, 91, 213, 19);
+		contentPane.add(lblAtributoPrincipal);
+		
+		textFieldAtributoPrincipal = new JTextField();
+		textFieldAtributoPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String atributoPrincipal = textFieldAtributoPrincipal.getText();
+				if(!atributoPrincipal.matches(" ")) {
+					lblAtributo.setVisible(true);
+					textFieldAtributo.setVisible(true);
+				}else {
+					lblAtributo.setVisible(true);
+					textFieldAtributo.setVisible(true);
+				}
+			}
+		});
+		textFieldAtributoPrincipal.setVisible(false);
+		textFieldAtributoPrincipal.setBounds(245, 93, 137, 19);
+		contentPane.add(textFieldAtributoPrincipal);
+		textFieldAtributoPrincipal.setColumns(10);
 	}
 }

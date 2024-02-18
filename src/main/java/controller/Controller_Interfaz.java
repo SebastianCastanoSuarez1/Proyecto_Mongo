@@ -140,10 +140,8 @@ public class Controller_Interfaz {
 	}
 
 	public Boolean anadirLista(Optional<Document> pacientes, String atributo, String[] lista) {
-		Document atributos = new Document();
 		List<String> alergenosList = Arrays.asList(lista); // Convertir array en lista
-		atributos.append(atributo, alergenosList);
-		return pacienteRepositoryImpl.update(pacientes, atributo, atributos);
+		return pacienteRepositoryImpl.update(pacientes, atributo, alergenosList);
 	}
 
 	public Boolean anadirComponente(String dni, String atributoComponente, String[] atributo, String[] valores,
@@ -160,7 +158,6 @@ public class Controller_Interfaz {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 		Document componente = new Document();
 		anadirElementosComponente(atributo, valores, componente);
-		paciente.get().append(atributoComponente, componente);
 		Boolean anadido = pacienteRepositoryImpl.update(paciente, atributoComponente, componente);
 		return anadido;
 	}
@@ -181,11 +178,12 @@ public class Controller_Interfaz {
 	}
 
 	private void anadirListaComponente(String[] atributoLista, ArrayList<String[]> listas, Document paciente) {
-	    for (int i = 0; i < listas.size()-1; i++) {
+	    for (int i = 0; i < listas.size(); i++) { // Corregir el límite del bucle
 	        String[] listaActual = listas.get(i); // Obtener la lista actual del índice i
-	        for (int j = 0; j < atributoLista.length && j < listaActual.length; j++) {// Separar los valores por espacio
-	            paciente.append(atributoLista[j], Arrays.asList(listaActual)); // Convertir a lista y agregar al documento
+	        for (int j = 0; j < atributoLista.length && j < listaActual.length; j++) {
+	            paciente.append(atributoLista[j], Arrays.asList(listaActual));
 	        }
 	    }
 	}
+
 }

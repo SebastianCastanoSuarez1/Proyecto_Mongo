@@ -163,13 +163,13 @@ public class VentanaComponentesLista extends JFrame {
 				String dni = formattedDni.getText().toString();
 				String textoIngresado = textArea_Lista_de_listas.getText();
 				String[] palabras = textoIngresado.split(",");
-				
+				ArrayList<String[]> listas = new ArrayList<String[]>();
 				for (int i = 0; i < palabras.length; i++) {
-					listaDeListas.add(palabras[i].split(" "));
+					listas.add(palabras[i].split(" "));
 				}
 				String atributoLista[] = textFieldNombreAtributo.getText().toString().split(" ");
 				String atributoPrincipal = textFieldAtributoPrincipal.getText();
-				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributoLista, listaDeListas);
+				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributoLista, listas);
 				textFieldMensaje.setText(
 						anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
 
@@ -188,21 +188,21 @@ public class VentanaComponentesLista extends JFrame {
 		textArea_Lista_de_listas.setVisible(false);
 		textArea_Lista_de_listas.setBounds(229, 183, 206, 59);
 		contentPane.add(textArea_Lista_de_listas);
-		
+
 		lblAtributoPrincipal = new JLabel("Introduzca el nombre del atributo principal");
 		lblAtributoPrincipal.setVisible(false);
 		lblAtributoPrincipal.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblAtributoPrincipal.setBounds(10, 84, 279, 27);
 		contentPane.add(lblAtributoPrincipal);
-		
+
 		textFieldAtributoPrincipal = new JTextField();
 		textFieldAtributoPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String atributoPrincipal = textFieldAtributoPrincipal.getText();
-				if(!atributoPrincipal.matches(" ")) {
+				if (!atributoPrincipal.matches(" ")) {
 					lblNombreAtributo.setVisible(true);
 					textFieldNombreAtributo.setVisible(true);
-				}else {
+				} else {
 					lblNombreAtributo.setVisible(false);
 					textFieldNombreAtributo.setVisible(false);
 				}

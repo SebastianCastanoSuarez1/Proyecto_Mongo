@@ -22,6 +22,7 @@ import org.bson.Document;
 
 import controller.Controller_Interfaz;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 public class VentanaComponentesListasValores extends JFrame {
 
@@ -42,7 +43,12 @@ public class VentanaComponentesListasValores extends JFrame {
 	private JTextField textFieldMensaje;
 	private JTextField textFieldAtributoPrincipal;
 	JLabel lblAtributoPrincipal;
-	
+	JTextArea textAreaListaValores;
+	JLabel lblListaValores;
+	private ArrayList<String[]> listaDeListas = new ArrayList<>();
+	private JLabel lblListaAtributos;
+	private JTextField textFieldListaAtributos;
+
 	/**
 	 * Launch the application.
 	 */
@@ -65,7 +71,7 @@ public class VentanaComponentesListasValores extends JFrame {
 	public VentanaComponentesListasValores() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 514, 388);
+		setBounds(100, 100, 520, 511);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -96,7 +102,7 @@ public class VentanaComponentesListasValores extends JFrame {
 			}
 		});
 		btnComprobar.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnComprobar.setBounds(311, 27, 98, 27);
+		btnComprobar.setBounds(292, 30, 98, 27);
 		contentPane.add(btnComprobar);
 		
 		try {
@@ -110,7 +116,7 @@ public class VentanaComponentesListasValores extends JFrame {
         }
 		 lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblDNI.setBounds(10, 27, 55, 40);
+		lblDNI.setBounds(37, 18, 55, 40);
 		contentPane.add(lblDNI);
 		
 		textFieldAtributos = new JTextField();
@@ -132,6 +138,18 @@ public class VentanaComponentesListasValores extends JFrame {
 		textFieldAtributos.setColumns(10);
 		
 		textFieldValores = new JTextField();
+		textFieldValores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String valores = textFieldValores.getText();
+				if(!valores.matches(" ")) {
+					lblListaAtributos.setVisible(true);
+					textFieldListaAtributos.setVisible(true);
+				}else {
+					lblListaAtributos.setVisible(false);
+					textFieldListaAtributos.setVisible(false);
+				}
+			}
+		});
 		textFieldValores.setVisible(false);
 		textFieldValores.setColumns(10);
 		textFieldValores.setBounds(260, 205, 173, 25);
@@ -152,7 +170,7 @@ public class VentanaComponentesListasValores extends JFrame {
 			}
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnCancelar.setBounds(128, 251, 102, 34);
+		btnCancelar.setBounds(118, 401, 102, 34);
 		contentPane.add(btnCancelar);
 		
 		btnAceptar = new JButton("Aceptar");
@@ -162,25 +180,31 @@ public class VentanaComponentesListasValores extends JFrame {
 				String atributoPrincipal = textFieldAtributoPrincipal.getText();
 				String atributo = textFieldAtributos.getText();
 				String valor = textFieldValores.getText();
+				String lista = textAreaListaValores.getText();
+				String atributoLista = textFieldListaAtributos.getText();
+				String[] palabras = lista.split(",");
+				for (int i = 0; i < palabras.length; i++) {
+					listaDeListas.add(palabras[i].split(" "));
+				}
+				String[] atributosLista = atributoLista.split(" ");
 				String[] atributos = atributo.split(" ");
 				String [] listaValores = valor.split(" ");
 				String[] listaAtributos = atributos;
-				ArrayList<String[]> listas = new ArrayList<String[]>();
-				listas.add(listaAtributos);
-				listas.add(listaValores);
+				listaAtributos = atributosLista;
 				
-				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributos,listaValores,listaAtributos ,listas);
+				
+				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributos,listaValores,listaAtributos ,listaDeListas);
 				textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
 
 			} 
 		});
 		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnAceptar.setBounds(266, 249, 98, 34);
+		btnAceptar.setBounds(268, 401, 98, 34);
 		contentPane.add(btnAceptar);
 		
 		textFieldMensaje = new JTextField();
 		textFieldMensaje.setColumns(10);
-		textFieldMensaje.setBounds(10, 322, 455, 19);
+		textFieldMensaje.setBounds(10, 445, 464, 19);
 		contentPane.add(textFieldMensaje);
 		
 		lblAtributoPrincipal = new JLabel("Introduzca el atributo principal");
@@ -203,8 +227,43 @@ public class VentanaComponentesListasValores extends JFrame {
 			}
 		});
 		textFieldAtributoPrincipal.setVisible(false);
-		textFieldAtributoPrincipal.setBounds(260, 89, 173, 27);
+		textFieldAtributoPrincipal.setBounds(260, 96, 173, 27);
 		contentPane.add(textFieldAtributoPrincipal);
 		textFieldAtributoPrincipal.setColumns(10);
+		
+		lblListaValores = new JLabel("Introduzca la lista de valores");
+		lblListaValores.setVisible(false);
+		lblListaValores.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblListaValores.setBounds(10, 331, 210, 27);
+		contentPane.add(lblListaValores);
+		
+		textAreaListaValores = new JTextArea();
+		textAreaListaValores.setVisible(false);
+		textAreaListaValores.setBounds(253, 303, 210, 88);
+		contentPane.add(textAreaListaValores);
+		
+		lblListaAtributos = new JLabel("Introduzca la lista de atributos");
+		lblListaAtributos.setVisible(false);
+		lblListaAtributos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblListaAtributos.setBounds(10, 257, 210, 27);
+		contentPane.add(lblListaAtributos);
+		
+		textFieldListaAtributos = new JTextField();
+		textFieldListaAtributos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String valores = textFieldListaAtributos.getText();
+				if(!valores.matches(" ")) {
+					lblListaValores.setVisible(true);
+					textAreaListaValores.setVisible(true);
+				}else {
+					lblListaValores.setVisible(false);
+					textAreaListaValores.setVisible(false);
+				}
+			}
+		});
+		textFieldListaAtributos.setVisible(false);
+		textFieldListaAtributos.setBounds(260, 259, 190, 27);
+		contentPane.add(textFieldListaAtributos);
+		textFieldListaAtributos.setColumns(10);
 	}
 }
