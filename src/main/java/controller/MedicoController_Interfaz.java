@@ -37,6 +37,8 @@ public class MedicoController_Interfaz {
 	public Optional<Document> comprobarDni(String dni){
 		Optional<Document> medicos= medicoRepositoryImpl.findById(dni);
 		return medicos;
+		
+		
 	}
 	
 	public String valorAtributoNuevo(String dni,String atributo, String valor) {
