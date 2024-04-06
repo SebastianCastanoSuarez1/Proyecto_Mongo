@@ -32,6 +32,7 @@ public class MedicoController_Interfaz {
 	public String findMedicoByNombre(String nombre) {
 		List<Document> medico = medicoRepositoryImpl.findByNombre(nombre);
 		return medicoRepositoryImpl.mostrarMedicos(medico);
+		
 	}
 	
 	public Optional<Document> comprobarDni(String dni){
