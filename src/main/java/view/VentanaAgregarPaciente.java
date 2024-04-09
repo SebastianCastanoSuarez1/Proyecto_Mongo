@@ -57,7 +57,7 @@ public class VentanaAgregarPaciente extends JFrame {
 	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	private JTextField textFieldAñadido;
 	VentanaOpcionAnadir voa;
-	VentanaPrincipal vp;
+	VentanaPrincipalPaciente vp;
 
 	/**
 	 * Launch the application.

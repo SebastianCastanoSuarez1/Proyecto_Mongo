@@ -22,7 +22,7 @@ public class VentanaOpcionAnadir extends JFrame {
 	JButton btnAnadirHistorialMedico;
 	VentanaAgregarPaciente vap;
 	VentanaAnadirAtributoNuevo van;
-	VentanaPrincipal vp;
+	VentanaPrincipalPaciente vp;
 	private JButton btnSalir;
 	private JButton btnAadirComponete;
 	VentanaLista vl;
@@ -106,7 +106,7 @@ public class VentanaOpcionAnadir extends JFrame {
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (btnSalir == e.getSource()) {
-					vp = new VentanaPrincipal();
+					vp = new VentanaPrincipalPaciente();
 					vp.setVisible(true);
 					dispose();
 				}

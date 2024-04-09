@@ -12,7 +12,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
@@ -31,8 +30,8 @@ public class VentanaEliminarPaciente extends JFrame {
 	MaskFormatter mascara;
 	JButton btnEliminar;
 	JButton btnCancelar;
-	private JTextField textFieldMensaje;
-	VentanaPrincipal vp;
+	VentanaPrincipalPaciente vp;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -64,16 +63,16 @@ public class VentanaEliminarPaciente extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		lblDNI = new JLabel("Introduzca DNI\r\n");
+		lblDNI = new JLabel("Introduzca DNI del paciente\r\n\r\n");
 		lblDNI.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblDNI.setBounds(24, 65, 126, 31);
+		lblDNI.setBounds(24, 65, 213, 31);
 		contentPane.add(lblDNI);
 
 		try {
 			mascara = new MaskFormatter("########?");
 			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			formattedDNI = new JFormattedTextField(mascara);
-			formattedDNI.setBounds(160, 67, 144, 32);
+			formattedDNI.setBounds(247, 67, 144, 32);
 			contentPane.add(formattedDNI);
 
 			btnEliminar = new JButton("Eliminar\r\n");
@@ -84,9 +83,12 @@ public class VentanaEliminarPaciente extends JFrame {
 
 						DeleteResult eliminado = controllerInterfaz.eliminarPaciente(dni);
 						if (eliminado.getDeletedCount() > 0) {
-							textFieldMensaje.setText("Paciente con dni: " + dni + " ha sido eliminado");
+							lblMensaje.setText("Paciente con dni: " + dni + " ha sido eliminado");
+							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							textFieldMensaje.setText("Paciente con dni:" + dni + " no ha sido eliminado");
+							lblMensaje.setText("Paciente con dni:" + dni + " no ha sido eliminado");
+							lblMensaje.setForeground(Color.RED);
+
 						}
 
 					}
@@ -99,7 +101,7 @@ public class VentanaEliminarPaciente extends JFrame {
 			btnCancelar = new JButton("Cancelar\r\n");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					vp = new VentanaPrincipal();
+					vp = new VentanaPrincipalPaciente();
 					vp.setVisible(true);
 					dispose();
 				}
@@ -107,11 +109,11 @@ public class VentanaEliminarPaciente extends JFrame {
 			btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnCancelar.setBounds(49, 169, 119, 39);
 			contentPane.add(btnCancelar);
-
-			textFieldMensaje = new JTextField();
-			textFieldMensaje.setBounds(0, 234, 436, 19);
-			contentPane.add(textFieldMensaje);
-			textFieldMensaje.setColumns(10);
+			
+			lblMensaje = new JLabel("\r\n");
+			lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblMensaje.setBounds(49, 220, 300, 19);
+			contentPane.add(lblMensaje);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

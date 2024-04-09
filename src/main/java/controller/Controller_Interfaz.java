@@ -9,6 +9,7 @@ import org.bson.Document;
 
 import com.mongodb.client.result.DeleteResult;
 
+import model.Medico;
 import model.Paciente;
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
 import view.PacienteView;
@@ -43,6 +44,11 @@ public class Controller_Interfaz {
 		return pacientes;
 	}
 
+	public Document anadirDniMedico(String dni) {
+		Document medicoDNI;
+		medicoDNI = new Paciente().append("DNI_Medico", dni);
+		return medicoDNI;
+	}
 	public String valorAtributoNuevo(String dni, String atributo, String valor) {
 		Optional<Document> pacientes;
 

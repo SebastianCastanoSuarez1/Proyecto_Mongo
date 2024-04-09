@@ -1,30 +1,30 @@
 package view;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	JButton btnAgregar;
-	JButton btnEliminarPaciente;
-	JButton btnModificar;
-	JButton btnMostrar;
-	VentanaOpcionAnadir voa;
-	VentanaMostrarPaciente vmp;
-	VentanaModificarPaciente vmop;
-	VentanaEliminarPaciente vep;
-	
+	VentanaPrincipalPaciente vpp;
+	VentanaPrincipalMedico vpm;
+	JLabel lblBienvenido;
+	JLabel lblEligaLaOpcion;
+	JButton btnMedico;
+	JButton btnPaciente;
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -44,7 +44,7 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 468, 329);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -52,65 +52,38 @@ public class VentanaPrincipal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		btnAgregar = new JButton("Agregar paciente");
-		btnAgregar.addActionListener(new ActionListener() {
+		lblBienvenido = new JLabel("Bienvenido");
+		lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblBienvenido.setBounds(170, 37, 108, 26);
+		contentPane.add(lblBienvenido);
+		
+		lblEligaLaOpcion = new JLabel("Eliga la opcion de prefiera\r\n");
+		lblEligaLaOpcion.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblEligaLaOpcion.setBounds(103, 73, 241, 26);
+		contentPane.add(lblEligaLaOpcion);
+		
+		btnMedico = new JButton("Ir a medicos");
+		btnMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(btnAgregar == e.getSource()) {
-					voa = new VentanaOpcionAnadir();
-					voa.setVisible(true);
-					dispose();
-				}
+				vpm = new VentanaPrincipalMedico();
+				vpm.setVisible(true);
+				dispose();
 			}
 		});
-		btnAgregar.setBounds(48, 91, 136, 23);
-		contentPane.add(btnAgregar);
+		btnMedico.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnMedico.setBounds(46, 148, 118, 43);
+		contentPane.add(btnMedico);
 		
-		btnEliminarPaciente = new JButton("Eliminar paciente");
-		btnEliminarPaciente.addActionListener(new ActionListener() {
+		btnPaciente = new JButton("Ir a pacientes");
+		btnPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(btnEliminarPaciente == e.getSource()) {
-					vep = new VentanaEliminarPaciente();
-					vep.setVisible(true);
-					dispose();
-
-				}
+				vpp  = new VentanaPrincipalPaciente();
+				vpp.setVisible(true);
+				dispose();
 			}
 		});
-		btnEliminarPaciente.setBounds(236, 91, 148, 23);
-		contentPane.add(btnEliminarPaciente);
-		
-		btnModificar = new JButton("Modificar paciente");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(btnModificar == e.getSource()) {
-					vmop = new VentanaModificarPaciente();
-					vmop.setVisible(true);
-					dispose();
-
-				}
-			}
-		});
-		btnModificar.setBounds(236, 168, 148, 23);
-		contentPane.add(btnModificar);
-		
-		btnMostrar = new JButton("Mostrar paciente");
-		btnMostrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(btnMostrar == e.getSource()) {
-					vmp = new VentanaMostrarPaciente();
-					vmp.setVisible(true);
-					dispose();
-
-				}
-			}
-		});
-		btnMostrar.setBounds(48, 168, 136, 23);
-		contentPane.add(btnMostrar);
-		
-		JLabel lblNewLabel = new JLabel("Clinica DABAS\r\n");
-		lblNewLabel.setBackground(new Color(255, 255, 128));
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblNewLabel.setBounds(145, 10, 148, 45);
-		contentPane.add(lblNewLabel);
+		btnPaciente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnPaciente.setBounds(244, 148, 131, 43);
+		contentPane.add(btnPaciente);
 	}
 }

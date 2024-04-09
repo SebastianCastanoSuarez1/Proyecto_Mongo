@@ -40,7 +40,7 @@ public class VentanaModificarPaciente extends JFrame {
 	private JTextField textFieldMensaje;
 	private JButton btnCancelar;
 	private JButton btnAceptar;
-	VentanaPrincipal vp;
+	VentanaPrincipalPaciente vp;
 	JLabel lblNombre;
 	private JTextField textFieldValorAtributo;
 	private JTextField textFieldNombre;
@@ -157,7 +157,7 @@ public class VentanaModificarPaciente extends JFrame {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vp = new VentanaPrincipal();
+				vp = new VentanaPrincipalPaciente();
 				vp.setVisible(true);
 				dispose();
 			}
