@@ -56,7 +56,7 @@ public class VentanaAgregarPaciente extends JFrame {
 
 	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	private JTextField textFieldAñadido;
-	VentanaOpcionAnadir voa;
+	VentanaOpcionAnadirPaciente voa;
 	VentanaPrincipalPaciente vp;
 
 	/**
@@ -309,7 +309,7 @@ public class VentanaAgregarPaciente extends JFrame {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				voa = new VentanaOpcionAnadir();
+				voa = new VentanaOpcionAnadirPaciente();
 				voa.setVisible(true);
 				dispose();
 			}

@@ -9,7 +9,6 @@ import org.bson.Document;
 
 import com.mongodb.client.result.DeleteResult;
 
-import model.Medico;
 import model.Paciente;
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
 import view.PacienteView;

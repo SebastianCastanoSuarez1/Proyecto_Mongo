@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.Optional;
+
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -16,26 +17,31 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
-import org.bson.Document;
-import controller.Controller_Interfaz;
 
-public class VentanaLista extends JFrame {
+import org.bson.Document;
+
+import controller.MedicoController_Interfaz;
+
+public class VentanaAnadirListaMedico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	MaskFormatter mascara;
+	
 	JLabel lblDNI;
-	JButton btnComprobar;
 	JFormattedTextField formattedDni;
-	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
-	private JLabel lblNombreAtributo;
-	private JTextField textFieldNombreAtributo;
-	private JTextField textFieldLista;
-	JLabel lblLista;
+	JButton btnComprobar;
+	JLabel lblNombre;
 	JButton btnCancelar;
 	JButton btnAceptar;
-	VentanaOpcionAnadirPaciente voa;
-	private JTextField textFieldMensaje;
+	VentanaOpcionAnadirMedico voam;
+	MedicoController_Interfaz controllerMedico = new MedicoController_Interfaz();
+	MaskFormatter mascara;
+	private JLabel lbLista;
+	
+	private JTextField textFieldLista;
+	private JTextField textFieldNombre;
+	private JLabel lblMensaje;
+
 	/**
 	 * Launch the application.
 	 */
@@ -43,7 +49,7 @@ public class VentanaLista extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaLista frame = new VentanaLista();
+					VentanaAnadirListaMedico frame = new VentanaAnadirListaMedico();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,10 +61,9 @@ public class VentanaLista extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaLista() {
-		setBackground(new Color(230, 230, 250));
+	public VentanaAnadirListaMedico() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 489, 341);
+		setBounds(100, 100, 471, 328);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -75,11 +80,11 @@ public class VentanaLista extends JFrame {
 		btnComprobar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnComprobar == e.getSource()) {
-					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText());
+					Optional<Document> pacientes = controllerMedico.findByDni(formattedDni.getText());
 					
 					if(pacientes.isPresent()) {
-						lblNombreAtributo.setVisible(true);
-						textFieldNombreAtributo.setVisible(true);
+						lblNombre.setVisible(true);
+						textFieldNombre.setVisible(true);
 					}else{
 						String mensaje = "El paciente con DNI " + formattedDni.getText() + " no existe "; 
 						JOptionPane.showMessageDialog(null, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -98,47 +103,23 @@ public class VentanaLista extends JFrame {
     		formattedDni.setBounds(91, 21, 148, 26);
     		contentPane.add(formattedDni);
     		
-    		lblNombreAtributo = new JLabel("Introduzca el nombre del atributo");
-    		lblNombreAtributo.setVisible(false);
-    		lblNombreAtributo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-    		lblNombreAtributo.setBounds(10, 76, 213, 27);
-    		contentPane.add(lblNombreAtributo);
-    		
-    		textFieldNombreAtributo = new JTextField();
-    		textFieldNombreAtributo.addActionListener(new ActionListener() {
-    			public void actionPerformed(ActionEvent e) {
-    				String atributo = textFieldNombreAtributo.getText().toString();
-    				if(!atributo.equals("")) {
-    					lblLista.setVisible(true);
-    					textFieldLista.setVisible(true);
-    				}else {
-    					lblLista.setVisible(false);
-    					textFieldLista.setVisible(false);
-    				}
-    			}
-    		});
-    		textFieldNombreAtributo.setVisible(false);
-    		textFieldNombreAtributo.setBounds(233, 75, 182, 34);
-    		contentPane.add(textFieldNombreAtributo);
-    		textFieldNombreAtributo.setColumns(10);
-    		
-    		lblLista = new JLabel("Introduzca la lista de los valores\r\n");
-    		lblLista.setVisible(false);
-    		lblLista.setFont(new Font("Tahoma", Font.PLAIN, 14));
-    		lblLista.setBounds(10, 133, 213, 27);
-    		contentPane.add(lblLista);
+    		lblNombre = new JLabel("Introduzca el nombre del atributo");
+    		lblNombre.setVisible(false);
+    		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    		lblNombre.setBounds(10, 76, 213, 27);
+    		contentPane.add(lblNombre);
     		
     		textFieldLista = new JTextField();
     		textFieldLista.setVisible(false);
     		textFieldLista.setColumns(10);
-    		textFieldLista.setBounds(233, 132, 182, 34);
+    		textFieldLista.setBounds(233, 136, 182, 27);
     		contentPane.add(textFieldLista);
     		
     		btnCancelar = new JButton("Cancelar\r\n");
     		btnCancelar.addActionListener(new ActionListener() {
     			public void actionPerformed(ActionEvent e) {
-    				voa = new VentanaOpcionAnadirPaciente();
-    				voa.setVisible(true);
+    				voam = new VentanaOpcionAnadirMedico();
+    				voam.setVisible(true);
     				dispose();
     			}
     		});
@@ -150,23 +131,55 @@ public class VentanaLista extends JFrame {
     		btnAceptar.addActionListener(new ActionListener() {
     			public void actionPerformed(ActionEvent e) {
     				
-					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText());
-					String atributo = textFieldNombreAtributo.getText();
+					Optional<Document> medicos = controllerMedico.findByDni(formattedDni.getText());
+					String atributo = textFieldNombre.getText();
     				String listas = textFieldLista.getText();
     				String [] lista = listas.split(" ");
-    				Boolean anadido = controllerInterfaz.anadirLista(pacientes, atributo, lista);
-					textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
-
-    			}
+    				Boolean anadido = controllerMedico.anadirLista(medicos, atributo, lista);
+					
+					if(anadido == true) {
+						lblMensaje.setText("El paciente ha sido actualizado con exito");
+						lblMensaje.setForeground(Color.GREEN);
+					}else {
+						lblMensaje.setText("El paciente no ha sido actualizado con exito");
+						lblMensaje.setForeground(Color.RED);
+					}
+					}
     		});
     		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
     		btnAceptar.setBounds(245, 196, 103, 34);
     		contentPane.add(btnAceptar);
     		
-    		textFieldMensaje = new JTextField();
-    		textFieldMensaje.setBounds(10, 275, 455, 19);
-    		contentPane.add(textFieldMensaje);
-    		textFieldMensaje.setColumns(10);
+    		lbLista = new JLabel("Introduzca la lista de los valores\r\n");
+    		lbLista.setVisible(false);
+    		lbLista.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    		lbLista.setBounds(10, 140, 213, 15);
+    		contentPane.add(lbLista);
+    		
+    		textFieldNombre = new JTextField();
+    		textFieldNombre.addActionListener(new ActionListener() {
+    			public void actionPerformed(ActionEvent e) {
+    				String atributo = textFieldNombre.getText().toString();
+    				if(!atributo.equals("")) {
+    					lbLista.setVisible(true);
+    					textFieldLista.setVisible(true);
+    				}else {
+    					lbLista.setVisible(false);
+    					textFieldLista.setVisible(false);
+    				}
+    			}
+    		});
+    		textFieldNombre.setVisible(false);
+    		textFieldNombre.setColumns(10);
+    		textFieldNombre.setBounds(233, 76, 182, 27);
+    		contentPane.add(textFieldNombre);
+    		
+    		lblMensaje = new JLabel("\r\n");
+    		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 13));
+    		lblMensaje.setBounds(41, 256, 377, 25);
+    		contentPane.add(lblMensaje);
+    		
+    		
 
     		
     		
@@ -175,4 +188,5 @@ public class VentanaLista extends JFrame {
         }
 		
 	}
+
 }

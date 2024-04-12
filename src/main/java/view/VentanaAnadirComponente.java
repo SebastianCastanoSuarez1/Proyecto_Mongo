@@ -20,7 +20,7 @@ public class VentanaAnadirComponente extends JFrame {
 	JButton btn_List_Valor;
 	JLabel lblNewLabelTitle;
 	JButton btnCancelar;
-	VentanaOpcionAnadir voa;
+	VentanaOpcionAnadirPaciente voa;
 	VentanaComponentesLista vl;
 	/**
 	 * Launch the application.
@@ -95,7 +95,7 @@ public class VentanaAnadirComponente extends JFrame {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				voa = new VentanaOpcionAnadir();
+				voa = new VentanaOpcionAnadirPaciente();
 				voa.setVisible(true);
 				dispose();
 			}

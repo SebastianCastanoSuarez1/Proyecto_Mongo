@@ -194,6 +194,7 @@ public class VentanaMostrarPaciente extends JFrame {
 				lblMensaje.setText("Introduzca el nombre del atributo");
 				lblMensaje.setVisible(true);
 				textFieldAtributo.setText("");
+				textAreaMostrar.setText("");
 				textFieldEscribirDni.setVisible(false);
 				textFieldEscribirNombre.setVisible(false);
 				textFieldValor.setVisible(false);

@@ -40,7 +40,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 	private JButton btnComprobar;
 	MaskFormatter mascara;
 	private JTextField textFieldMensaje;
-	VentanaOpcionAnadir voa;
+	VentanaOpcionAnadirPaciente voa;
 
 	/**
 	 * Launch the application.
@@ -75,7 +75,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 		lblAtributoANadir = new JLabel("Introduzca el nombre del nuevo atributo");
 		lblAtributoANadir.setVisible(false);
 		lblAtributoANadir.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblAtributoANadir.setBounds(0, 96, 267, 41);
+		lblAtributoANadir.setBounds(0, 96, 279, 41);
 		contentPane.add(lblAtributoANadir);
 		
 		textFieldNombreAtributo = new JTextField();
@@ -112,7 +112,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnCancelar == e.getSource()) {
-					voa = new VentanaOpcionAnadir();
+					voa = new VentanaOpcionAnadirPaciente();
 					voa.setVisible(true);
 					dispose();
 				}

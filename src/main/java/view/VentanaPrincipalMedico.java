@@ -17,7 +17,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	VentanaEliminarMedico vem;
-	VentanaAnadirMedico vam;
+	VentanaOpcionAnadirMedico voam;
 	VentanaMostrarMedico vmm;
 	JButton btnAgregarMedico;
 	JButton btnMostrarMedico;
@@ -57,8 +57,8 @@ public class VentanaPrincipalMedico extends JFrame {
 		btnAgregarMedico = new JButton("Agregar medico");
 		btnAgregarMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vam = new VentanaAnadirMedico();
-				vam.setVisible(true);
+				voam = new VentanaOpcionAnadirMedico();
+				voam.setVisible(true);
 				dispose();
 			}
 		});
@@ -77,6 +77,10 @@ public class VentanaPrincipalMedico extends JFrame {
 		contentPane.add(btnMostrarMedico);
 		
 		btnModificarMedico = new JButton("Modificar medico");
+		btnModificarMedico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnModificarMedico.setBounds(245, 187, 133, 27);
 		contentPane.add(btnModificarMedico);
 		

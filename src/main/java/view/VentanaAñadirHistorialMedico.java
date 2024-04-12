@@ -261,7 +261,7 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnCancelar == e.getSource()) {
-					VentanaOpcionAnadir voa = new VentanaOpcionAnadir();
+					VentanaOpcionAnadirPaciente voa = new VentanaOpcionAnadirPaciente();
 					voa.setVisible(true);
 					dispose();
 				}

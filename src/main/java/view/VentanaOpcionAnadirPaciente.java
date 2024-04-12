@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class VentanaOpcionAnadir extends JFrame {
+public class VentanaOpcionAnadirPaciente extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -34,7 +34,7 @@ public class VentanaOpcionAnadir extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaOpcionAnadir frame = new VentanaOpcionAnadir();
+					VentanaOpcionAnadirPaciente frame = new VentanaOpcionAnadirPaciente();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +46,7 @@ public class VentanaOpcionAnadir extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaOpcionAnadir() {
+	public VentanaOpcionAnadirPaciente() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 473, 331);

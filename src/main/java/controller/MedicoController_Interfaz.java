@@ -75,6 +75,10 @@ public class MedicoController_Interfaz {
 		String ensenar = medicoRepositoryImpl.mostrarMedicos(medicos);
 		return ensenar;
 	}
+	public String mostrar(Optional<Document> medicos) {
+		String ensenar = medicoRepositoryImpl.mostrar(medicos);
+		return ensenar;
+	}
 
 	public String mostrar(String mensaje) {
 		return mensaje;
@@ -145,6 +149,8 @@ public class MedicoController_Interfaz {
 	        }
 	    }
 	}
+
+	
 	
 }	
 

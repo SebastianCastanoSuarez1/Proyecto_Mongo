@@ -99,7 +99,7 @@ public class VentanaEliminarMedico extends JFrame {
 			}
 		});
 		btnEliminar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnEliminar.setBounds(260, 162, 119, 39);
+		btnEliminar.setBounds(259, 162, 119, 39);
 		contentPane.add(btnEliminar);
 		
 		btnCancelar = new JButton("Cancelar\r\n");
@@ -111,7 +111,7 @@ public class VentanaEliminarMedico extends JFrame {
 			}
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnCancelar.setBounds(88, 162, 119, 39);
+		btnCancelar.setBounds(87, 162, 112, 39);
 		contentPane.add(btnCancelar);
 		
 		lblMensaje = new JLabel("\r\n");

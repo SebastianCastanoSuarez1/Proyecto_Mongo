@@ -20,7 +20,7 @@ public class VentanaPrincipalPaciente extends JFrame {
 	JButton btnEliminarPaciente;
 	JButton btnModificar;
 	JButton btnMostrar;
-	VentanaOpcionAnadir voa;
+	VentanaOpcionAnadirPaciente voa;
 	VentanaMostrarPaciente vmp;
 	VentanaModificarPaciente vmop;
 	VentanaEliminarPaciente vep;
@@ -56,7 +56,7 @@ public class VentanaPrincipalPaciente extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnAgregar == e.getSource()) {
-					voa = new VentanaOpcionAnadir();
+					voa = new VentanaOpcionAnadirPaciente();
 					voa.setVisible(true);
 					dispose();
 				}

@@ -35,7 +35,7 @@ public class VentanaAnadirMedico extends JFrame {
 	JButton btnCancelar;
 	JButton btnAceptar;
 	JLabel lblMensaje;
-	VentanaPrincipalMedico vpm;
+	VentanaOpcionAnadirMedico vpm;
 	MedicoController_Interfaz medico = new MedicoController_Interfaz();
 	
 	/**
@@ -121,7 +121,7 @@ public class VentanaAnadirMedico extends JFrame {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vpm = new VentanaPrincipalMedico();
+				vpm = new VentanaOpcionAnadirMedico();
 				vpm.setVisible(true);
 				dispose();
 			}

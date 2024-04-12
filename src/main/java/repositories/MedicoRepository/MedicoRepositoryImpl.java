@@ -67,6 +67,18 @@ public class MedicoRepositoryImpl implements MedicoRepository{
 		}
 		return pretty;
 	}
+	public String mostrar(Optional<Document> medicos) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String pretty = "";
+		if (medicos.isEmpty()) {
+
+		} else {
+			Document doc1 = medicos.get();
+			String json = gson.toJson(doc1);
+			pretty += pretty(json) + "\n";
+		}
+		return pretty;
+	}
 
 	@Override
 	public Boolean save(Document entity) {
