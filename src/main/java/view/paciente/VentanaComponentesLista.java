@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -39,12 +39,12 @@ public class VentanaComponentesLista extends JFrame {
 	JButton btnCancelar;
 	JButton btnAceptar;
 	VentanaAnadirComponente vac;
-	private JTextField textFieldMensaje;
 	JLabel lblAtributoPrincipal;
 	private ArrayList<String[]> listaDeListas = new ArrayList<>();
 
 	private TextArea textArea_Lista_de_listas;
 	private JTextField textFieldAtributoPrincipal;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -80,7 +80,7 @@ public class VentanaComponentesLista extends JFrame {
 
 		lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblDNI.setBounds(24, 10, 55, 40);
+		lblDNI.setBounds(61, 10, 55, 40);
 		contentPane.add(lblDNI);
 
 		btnComprobar = new JButton("Comprobar");
@@ -100,14 +100,14 @@ public class VentanaComponentesLista extends JFrame {
 			}
 		});
 		btnComprobar.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnComprobar.setBounds(297, 19, 98, 27);
+		btnComprobar.setBounds(317, 19, 98, 27);
 		contentPane.add(btnComprobar);
 
 		try {
 			mascara = new MaskFormatter("########?");
 			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			formattedDni = new JFormattedTextField(mascara);
-			formattedDni.setBounds(91, 21, 148, 26);
+			formattedDni.setBounds(141, 21, 148, 26);
 			contentPane.add(formattedDni);
 
 		} catch (ParseException e) {
@@ -163,26 +163,26 @@ public class VentanaComponentesLista extends JFrame {
 				String dni = formattedDni.getText().toString();
 				String textoIngresado = textArea_Lista_de_listas.getText();
 				String[] palabras = textoIngresado.split(",");
-				ArrayList<String[]> listas = new ArrayList<String[]>();
+				
 				for (int i = 0; i < palabras.length; i++) {
-					listas.add(palabras[i].split(" "));
+					listaDeListas.add(palabras[i].split(" "));
 				}
 				String atributoLista[] = textFieldNombreAtributo.getText().toString().split(" ");
 				String atributoPrincipal = textFieldAtributoPrincipal.getText();
-				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributoLista, listas);
-				textFieldMensaje.setText(
-						anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
+				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributoLista, listaDeListas);
+				if(anadido == true) {
+					lblMensaje.setText("El paciente ha sido actualizado con exito");
+					lblMensaje.setForeground(Color.GREEN);
+				}else {
+					lblMensaje.setText("El paciente no ha sido actualizado con exito");
+					lblMensaje.setForeground(Color.RED);
+				}
 
 			}
 		});
 		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAceptar.setBounds(246, 248, 103, 34);
 		contentPane.add(btnAceptar);
-
-		textFieldMensaje = new JTextField();
-		textFieldMensaje.setBounds(10, 303, 497, 19);
-		contentPane.add(textFieldMensaje);
-		textFieldMensaje.setColumns(10);
 
 		textArea_Lista_de_listas = new TextArea();
 		textArea_Lista_de_listas.setVisible(false);
@@ -212,6 +212,11 @@ public class VentanaComponentesLista extends JFrame {
 		textFieldAtributoPrincipal.setBounds(285, 82, 150, 27);
 		contentPane.add(textFieldAtributoPrincipal);
 		textFieldAtributoPrincipal.setColumns(10);
+		
+		lblMensaje = new JLabel("");
+		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMensaje.setBounds(24, 315, 483, 20);
+		contentPane.add(lblMensaje);
 
 	}
 }

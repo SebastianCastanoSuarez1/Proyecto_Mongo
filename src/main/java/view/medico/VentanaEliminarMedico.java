@@ -1,4 +1,4 @@
-package view;
+package view.medico;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -70,9 +70,7 @@ public class VentanaEliminarMedico extends JFrame {
 			mascara = new MaskFormatter("########?");
 			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			formattedDNI = new JFormattedTextField(mascara);
-			formattedDNI.setBounds(160, 67, 144, 32);
-			formattedDNI = new JFormattedTextField();
-			formattedDNI.setBounds(259, 60, 144, 32);
+			formattedDNI.setBounds(235, 60, 144, 32);
 			contentPane.add(formattedDNI);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -87,10 +85,10 @@ public class VentanaEliminarMedico extends JFrame {
 
 					DeleteResult eliminado = medico.eliminarMedico(dni);
 					if (eliminado.getDeletedCount() > 0) {
-						lblMensaje.setText("Paciente con dni: " + dni + " ha sido eliminado");
+						lblMensaje.setText("Medico con dni: " + dni + " ha sido eliminado");
 						lblMensaje.setForeground(Color.GREEN);
 					} else {
-						lblMensaje.setText("Paciente con dni:" + dni + " no ha sido eliminado");
+						lblMensaje.setText("Medico con dni:" + dni + " no ha sido eliminado");
 						lblMensaje.setForeground(Color.RED);
 
 					}

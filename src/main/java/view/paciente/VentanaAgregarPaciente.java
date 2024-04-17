@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -55,9 +55,9 @@ public class VentanaAgregarPaciente extends JFrame {
 	JButton btnCancelar;
 
 	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
-	private JTextField textFieldAñadido;
 	VentanaOpcionAnadirPaciente voa;
 	VentanaPrincipalPaciente vp;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -275,11 +275,6 @@ public class VentanaAgregarPaciente extends JFrame {
 
 		comboBoxTipo.setBounds(316, 165, 115, 21);
 		contentPane.add(comboBoxTipo);
-
-		textFieldAñadido = new JTextField();
-		textFieldAñadido.setBounds(10, 279, 493, 27);
-		contentPane.add(textFieldAñadido);
-		textFieldAñadido.setColumns(10);
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -296,8 +291,13 @@ public class VentanaAgregarPaciente extends JFrame {
 							comboBoxGrupoSanguineo.getSelectedItem().toString(),
 							comboBoxEnfermedad.getSelectedItem().toString(), comboBoxTipo.getSelectedItem().toString());
 					Boolean anadido = controllerInterfaz.salvarPaciente(paciente);
-					textFieldAñadido.setText(controllerInterfaz.mostrar(
-							anadido ? "El paciente ha sido añadido con exito" : "El paciente no se ha añadido"));
+					if(anadido == true) {
+						lblMensaje.setText("El paciente ha sido añadido con exito");
+						lblMensaje.setForeground(Color.GREEN);
+					}else {
+						lblMensaje.setText("El paciente no ha sido añadido con exito");
+						lblMensaje.setForeground(Color.RED);
+					}
 
 				}
 			}
@@ -317,6 +317,11 @@ public class VentanaAgregarPaciente extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnCancelar.setBounds(80, 217, 126, 34);
 		contentPane.add(btnCancelar);
+		
+		lblMensaje = new JLabel("");
+		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMensaje.setBounds(26, 285, 465, 23);
+		contentPane.add(lblMensaje);
 
 	}
 }

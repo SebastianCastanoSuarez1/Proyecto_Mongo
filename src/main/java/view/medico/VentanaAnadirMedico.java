@@ -1,10 +1,11 @@
-package view;
+package view.medico;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import org.bson.Document;
 
@@ -15,14 +16,17 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
 public class VentanaAnadirMedico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textFieldDNI;
+	JFormattedTextField formattedDni;
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellidos;
 	private JTextField textFieldEspecialidad;
@@ -35,6 +39,7 @@ public class VentanaAnadirMedico extends JFrame {
 	JButton btnCancelar;
 	JButton btnAceptar;
 	JLabel lblMensaje;
+	MaskFormatter mascara;
 	VentanaOpcionAnadirMedico vpm;
 	MedicoController_Interfaz medico = new MedicoController_Interfaz();
 	
@@ -73,10 +78,16 @@ public class VentanaAnadirMedico extends JFrame {
 		lblDNI.setBounds(31, 29, 52, 24);
 		contentPane.add(lblDNI);
 		
-		textFieldDNI = new JTextField();
-		textFieldDNI.setBounds(69, 33, 135, 20);
-		contentPane.add(textFieldDNI);
-		textFieldDNI.setColumns(10);
+		try {
+			mascara = new MaskFormatter("########?");
+			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+			formattedDni = new JFormattedTextField(mascara);
+			formattedDni.setBounds(77, 33, 138, 19);
+			contentPane.add(formattedDni);
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		lblNombre = new JLabel("Nombre\r\n");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -134,7 +145,7 @@ public class VentanaAnadirMedico extends JFrame {
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String dni = textFieldDNI.getText();
+				String dni = formattedDni.getText();
 				String nombre = textFieldNombre.getText();
 				String apellidos = textFieldApellidos.getText();
 				String especialidad = textFieldEspecialidad.getText();
@@ -142,10 +153,10 @@ public class VentanaAnadirMedico extends JFrame {
 				Document medicos = medico.anadirMedicoNuevo(dni, nombre, apellidos, especialidad, anio_experiencia);
 				Boolean anadido = medico.salvarMedico(medicos);
 				if(anadido == true) {
-					lblMensaje.setText("El paciente ha sido añadido con exito");
+					lblMensaje.setText("El medico ha sido añadido con exito");
 					lblMensaje.setForeground(Color.GREEN);
 				}else {
-					lblMensaje.setText("El paciente no ha sido añadido con exito");
+					lblMensaje.setText("El medico no ha sido añadido con exito");
 					lblMensaje.setForeground(Color.RED);
 				}
 			}
@@ -156,7 +167,7 @@ public class VentanaAnadirMedico extends JFrame {
 		
 		lblMensaje = new JLabel("");
 		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblMensaje.setBounds(104, 298, 214, 13);
+		lblMensaje.setBounds(104, 298, 296, 24);
 		contentPane.add(lblMensaje);
 	}
 }

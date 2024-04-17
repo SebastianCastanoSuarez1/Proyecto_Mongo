@@ -1,4 +1,4 @@
-package view;
+package view.medico;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -15,16 +15,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
 import org.bson.Document;
 
-import controller.Controller_Interfaz;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
+import controller.MedicoController_Interfaz;
 
-public class VentanaComponentesListasValores extends JFrame {
+public class VentanaComponentesListasValoresMedico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -33,14 +33,13 @@ public class VentanaComponentesListasValores extends JFrame {
 	JButton btnComprobar;
 	JFormattedTextField formattedDni;
 	JLabel lblDNI;
-	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
+	private final MedicoController_Interfaz medicoInterfaz = new MedicoController_Interfaz();
 	private JTextField textFieldAtributos;
 	private JTextField textFieldValores;
 	JLabel lblValores;
 	JButton btnCancelar;
 	JButton btnAceptar;
-	VentanaAnadirComponente vac;
-	private JTextField textFieldMensaje;
+	VentanaAnadirComponenteMedico vac;
 	private JTextField textFieldAtributoPrincipal;
 	JLabel lblAtributoPrincipal;
 	JTextArea textAreaListaValores;
@@ -48,6 +47,7 @@ public class VentanaComponentesListasValores extends JFrame {
 	private ArrayList<String[]> listaDeListas = new ArrayList<>();
 	private JLabel lblListaAtributos;
 	private JTextField textFieldListaAtributos;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -56,7 +56,7 @@ public class VentanaComponentesListasValores extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaComponentesListasValores frame = new VentanaComponentesListasValores();
+					VentanaComponentesListasValoresMedico frame = new VentanaComponentesListasValoresMedico();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,7 +68,7 @@ public class VentanaComponentesListasValores extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaComponentesListasValores() {
+	public VentanaComponentesListasValoresMedico() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 520, 511);
@@ -89,34 +89,34 @@ public class VentanaComponentesListasValores extends JFrame {
 		btnComprobar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnComprobar == e.getSource()) {
-					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText());
+					Optional<Document> medicos = medicoInterfaz.findByDni(formattedDni.getText());
 					
-					if(pacientes.isPresent()) {
+					if(medicos.isPresent()) {
 						lblAtributoPrincipal.setVisible(true);
 						textFieldAtributoPrincipal.setVisible(true);
 					}else{
-						String mensaje = "El paciente con DNI " + formattedDni.getText() + " no existe "; 
+						String mensaje = "El medico con DNI " + formattedDni.getText() + " no existe "; 
 						JOptionPane.showMessageDialog(null, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
 		});
 		btnComprobar.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnComprobar.setBounds(292, 30, 98, 27);
+		btnComprobar.setBounds(321, 30, 98, 27);
 		contentPane.add(btnComprobar);
 		
 		try {
             mascara = new MaskFormatter("########?");
             mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             formattedDni = new JFormattedTextField(mascara);
-    		formattedDni.setBounds(102, 32, 148, 26);
+    		formattedDni.setBounds(151, 32, 148, 26);
     		contentPane.add(formattedDni);
 		} catch (ParseException e) {
             e.printStackTrace();
         }
 		 lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblDNI.setBounds(37, 18, 55, 40);
+		lblDNI.setBounds(86, 21, 55, 40);
 		contentPane.add(lblDNI);
 		
 		textFieldAtributos = new JTextField();
@@ -164,7 +164,7 @@ public class VentanaComponentesListasValores extends JFrame {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vac = new VentanaAnadirComponente();
+				vac = new VentanaAnadirComponenteMedico();
 				vac.setVisible(true);
 				dispose();
 			}
@@ -193,19 +193,20 @@ public class VentanaComponentesListasValores extends JFrame {
 				listaAtributos = atributosLista;
 				
 				
-				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, atributos,listaValores,listaAtributos ,listaDeListas);
-				textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
+				Boolean anadido = medicoInterfaz.anadirComponente(dni, atributoPrincipal, atributos,listaValores,listaAtributos ,listaDeListas);
+				if(anadido == true) {
+					lblMensaje.setText("El medico ha sido añadido con exito");
+					lblMensaje.setForeground(Color.GREEN);
+				}else {
+					lblMensaje.setText("El medico no ha sido añadido con exito");
+					lblMensaje.setForeground(Color.RED);
+				}
 
 			} 
 		});
 		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAceptar.setBounds(268, 401, 98, 34);
 		contentPane.add(btnAceptar);
-		
-		textFieldMensaje = new JTextField();
-		textFieldMensaje.setColumns(10);
-		textFieldMensaje.setBounds(10, 445, 464, 19);
-		contentPane.add(textFieldMensaje);
 		
 		lblAtributoPrincipal = new JLabel("Introduzca el atributo principal");
 		lblAtributoPrincipal.setVisible(false);
@@ -265,5 +266,10 @@ public class VentanaComponentesListasValores extends JFrame {
 		textFieldListaAtributos.setBounds(260, 259, 190, 27);
 		contentPane.add(textFieldListaAtributos);
 		textFieldListaAtributos.setColumns(10);
+		
+		lblMensaje = new JLabel("");
+		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMensaje.setBounds(20, 445, 476, 23);
+		contentPane.add(lblMensaje);
 	}
 }

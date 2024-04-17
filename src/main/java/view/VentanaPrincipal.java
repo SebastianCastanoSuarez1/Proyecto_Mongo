@@ -5,6 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import view.medico.VentanaPrincipalMedico;
+import view.paciente.VentanaPrincipalPaciente;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;

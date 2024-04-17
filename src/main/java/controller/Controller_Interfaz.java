@@ -11,7 +11,7 @@ import com.mongodb.client.result.DeleteResult;
 
 import model.Paciente;
 import repositories.PacientesRepositories.PacienteRepositoryImpl;
-import view.PacienteView;
+import view.paciente.PacienteView;
 
 public class Controller_Interfaz {
 	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
@@ -39,15 +39,27 @@ public class Controller_Interfaz {
 	}
 
 	public Optional<Document> comprobarDni(String dni) {
+		
 		Optional<Document> pacientes = pacienteRepositoryImpl.findById(dni);
 		return pacientes;
 	}
 
-	public Document anadirDniMedico(String dni) {
-		Document medicoDNI;
-		medicoDNI = new Paciente().append("DNI_Medico", dni);
-		return medicoDNI;
+	public String anadirDniMedico(String[] dniPacientes,String dni) {
+	    Boolean actualizado = false;
+	    for (int i = 0; i < dniPacientes.length; i++) {
+	        Optional<Document> paciente = pacienteRepositoryImpl.findById(dniPacientes[i]);
+	        if (paciente.isPresent()) {
+	            actualizado = pacienteRepositoryImpl.update(paciente, "Dni_Medico", dni);
+	            if (!actualizado) {
+	                return "El paciente con DNI " + dniPacientes[i] + " no se ha actualizado";
+	            }
+	        } else {
+	            return "El paciente con DNI " + dniPacientes[i] + " no se ha encontrado";
+	        }
+	    }
+	    return "Todos los pacientes han sido actualizados correctamente";
 	}
+
 	public String valorAtributoNuevo(String dni, String atributo, String valor) {
 		Optional<Document> pacientes;
 

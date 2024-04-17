@@ -1,4 +1,4 @@
-package view;
+package view.medico;
 
 import java.awt.EventQueue;
 
@@ -74,14 +74,14 @@ public class VentanaAnadirAtributoNuevoMedico extends JFrame {
 		
 		lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblDNI.setBounds(42, 38, 55, 40);
+		lblDNI.setBounds(86, 38, 55, 40);
 		contentPane.add(lblDNI);
 		
 		try {
             mascara = new MaskFormatter("########?");
             mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             formattedDni = new JFormattedTextField(mascara);
-    		formattedDni.setBounds(107, 49, 148, 26);
+    		formattedDni.setBounds(182, 49, 148, 26);
     		contentPane.add(formattedDni);
     		
     		
@@ -145,10 +145,10 @@ public class VentanaAnadirAtributoNuevoMedico extends JFrame {
 					if(medicos.isPresent()) {
 						Boolean anadido =controllerMedico.actualizarMedico(medicos,textFieldNombre.getText(), textFieldValor.getText());
 						if(anadido == true) {
-							lblMensaje.setText("El paciente ha sido actualizado con exito");
+							lblMensaje.setText("El medico ha sido actualizado con exito");
 							lblMensaje.setForeground(Color.GREEN);
 						}else {
-							lblMensaje.setText("El paciente no ha sido actualizado con exito");
+							lblMensaje.setText("El medico no ha sido actualizado con exito");
 							lblMensaje.setForeground(Color.RED);
 						}
 					}else {
@@ -171,20 +171,20 @@ public class VentanaAnadirAtributoNuevoMedico extends JFrame {
 		btnComprobar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnComprobar == e.getSource()) {
-					Optional<Document> pacientes = controllerMedico.findByDni(formattedDni.getText());
+					Optional<Document> medicos = controllerMedico.findByDni(formattedDni.getText());
 					
-					if(pacientes.isPresent()) {
+					if(medicos.isPresent()) {
 						lblNombre.setVisible(true);
 						textFieldNombre.setVisible(true);
 					}else{
-						String mensaje = "El paciente con DNI " + formattedDni.getText() + " no existe "; 
+						String mensaje = "El medico con DNI " + formattedDni.getText() + " no existe "; 
 						JOptionPane.showMessageDialog(null, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
 		});
 		btnComprobar.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnComprobar.setBounds(305, 47, 98, 27);
+		btnComprobar.setBounds(360, 47, 98, 27);
 		contentPane.add(btnComprobar);
 	}
 }

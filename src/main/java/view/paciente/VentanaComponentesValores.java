@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -38,9 +38,9 @@ public class VentanaComponentesValores extends JFrame {
 	private JTextField textFieldValores;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
-	private JTextField textFieldMensaje;
 	private JLabel lblAtributoPrincipal;
 	private JTextField textFieldAtributoPrincipal;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -88,14 +88,14 @@ public class VentanaComponentesValores extends JFrame {
 			}
 		});
 		btnComprobar.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnComprobar.setBounds(270, 33, 98, 27);
+		btnComprobar.setBounds(284, 33, 98, 27);
 		contentPane.add(btnComprobar);
 		
 		try {
 			mascara = new MaskFormatter("########?");
 			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			formattedDni = new JFormattedTextField(mascara);
-			formattedDni.setBounds(85, 35, 148, 26);
+			formattedDni.setBounds(114, 35, 148, 26);
 			contentPane.add(formattedDni);
 
 		} catch (ParseException e) {
@@ -104,7 +104,7 @@ public class VentanaComponentesValores extends JFrame {
 		
 		lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblDNI.setBounds(20, 24, 55, 40);
+		lblDNI.setBounds(49, 24, 55, 40);
 		contentPane.add(lblDNI);
 		
 		lblAtributo = new JLabel("Introduzca el nombre del atributo");
@@ -153,8 +153,13 @@ public class VentanaComponentesValores extends JFrame {
 				String[] componenteAtributo = atributo.split(" ");
 				String[] componenteValor = valores.split(" ");
 				Boolean anadido = controllerInterfaz.anadirComponente(dni, atributoPrincipal, componenteAtributo, componenteValor);
-				textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
-
+				if(anadido == true) {
+					lblMensaje.setText("El paciente ha sido actualizado con exito");
+					lblMensaje.setForeground(Color.GREEN);
+				}else {
+					lblMensaje.setText("El paciente no ha sido actualizado con exito");
+					lblMensaje.setForeground(Color.RED);
+				}
 			}
 		});
 		btnAceptar.setBounds(246, 245, 85, 27);
@@ -171,11 +176,6 @@ public class VentanaComponentesValores extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCancelar.setBounds(86, 244, 95, 27);
 		contentPane.add(btnCancelar);
-		
-		textFieldMensaje = new JTextField();
-		textFieldMensaje.setColumns(10);
-		textFieldMensaje.setBounds(10, 301, 408, 19);
-		contentPane.add(textFieldMensaje);
 		
 		lblAtributoPrincipal = new JLabel("Introduzca el atributo principal");
 		lblAtributoPrincipal.setVisible(false);
@@ -200,5 +200,10 @@ public class VentanaComponentesValores extends JFrame {
 		textFieldAtributoPrincipal.setBounds(245, 93, 137, 19);
 		contentPane.add(textFieldAtributoPrincipal);
 		textFieldAtributoPrincipal.setColumns(10);
+		
+		lblMensaje = new JLabel("");
+		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMensaje.setBounds(10, 301, 446, 19);
+		contentPane.add(lblMensaje);
 	}
 }

@@ -1,17 +1,19 @@
-package view;
+package view.medico;
 
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class VentanaAnadirComponente extends JFrame {
+import java.awt.Color;
+import javax.swing.JButton;
+import java.awt.Font;
+import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class VentanaAnadirComponenteMedico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -20,8 +22,10 @@ public class VentanaAnadirComponente extends JFrame {
 	JButton btn_List_Valor;
 	JLabel lblNewLabelTitle;
 	JButton btnCancelar;
-	VentanaOpcionAnadirPaciente voa;
-	VentanaComponentesLista vl;
+	VentanaOpcionAnadirMedico voam;
+	VentanaComponentesListaMedico vclm;
+	VentanaComponentesValoresMedico vcvm;
+	VentanaComponentesListasValoresMedico vclvm;
 	/**
 	 * Launch the application.
 	 */
@@ -29,7 +33,7 @@ public class VentanaAnadirComponente extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaAnadirComponente frame = new VentanaAnadirComponente();
+					VentanaAnadirComponenteMedico frame = new VentanaAnadirComponenteMedico();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,67 +45,67 @@ public class VentanaAnadirComponente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaAnadirComponente() {
-		setResizable(false);
+	public VentanaAnadirComponenteMedico() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 519, 363);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
 		btn_List = new JButton("Listas");
 		btn_List.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vl = new VentanaComponentesLista();
-				vl.setVisible(true);
+				vclm = new VentanaComponentesListaMedico();
+				vclm.setVisible(true);
 				dispose();
 			}
 		});
 		btn_List.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_List.setBounds(155, 127, 114, 47);
+		btn_List.setBounds(168, 134, 114, 47);
 		contentPane.add(btn_List);
-
+		
 		btn_Valor = new JButton("Valores\r\n");
-		btn_Valor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_Valor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaComponentesValores vc = new VentanaComponentesValores();
-				vc.setVisible(true);
+				vcvm = new VentanaComponentesValoresMedico();
+				vcvm.setVisible(true);
 				dispose();
 			}
 		});
-		btn_Valor.setBounds(290, 127, 114, 47);
+		btn_Valor.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_Valor.setBounds(303, 134, 114, 47);
 		contentPane.add(btn_Valor);
-
+		
 		btn_List_Valor = new JButton("Listas y valores");
 		btn_List_Valor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaComponentesListasValores vc = new VentanaComponentesListasValores();
-				vc.setVisible(true);
+				vclvm = new VentanaComponentesListasValoresMedico();
+				vclvm.setVisible(true);
 				dispose();
 			}
 		});
 		btn_List_Valor.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_List_Valor.setBounds(20, 127, 114, 47);
+		btn_List_Valor.setBounds(43, 134, 114, 47);
 		contentPane.add(btn_List_Valor);
-
-		lblNewLabelTitle = new JLabel("Añadir componentes");
+		
+		lblNewLabelTitle = new JLabel("Añadir componentes a medico\r\n");
 		lblNewLabelTitle.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabelTitle.setBounds(137, 33, 224, 38);
+		lblNewLabelTitle.setBounds(124, 38, 250, 40);
 		contentPane.add(lblNewLabelTitle);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				voa = new VentanaOpcionAnadirPaciente();
-				voa.setVisible(true);
+				voam = new VentanaOpcionAnadirMedico();
+				voam.setVisible(true);
 				dispose();
 			}
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCancelar.setBounds(155, 206, 114, 47);
+		btnCancelar.setBounds(168, 213, 114, 47);
 		contentPane.add(btnCancelar);
 	}
 }

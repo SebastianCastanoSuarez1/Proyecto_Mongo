@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -44,7 +44,6 @@ public class VentanaEnfermedades extends JFrame {
 	private JLabel lblInforme;
 	private final Controller_Interfaz controllerInterfaz = new Controller_Interfaz();
 	VentanaAñadirHistorialMedico vah = new VentanaAñadirHistorialMedico();
-	private JTextField textFieldMensaje;
 
 	/**
 	 * Launch the application.
@@ -122,6 +121,7 @@ public class VentanaEnfermedades extends JFrame {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				vah.setVisible(true);
 				dispose();
 			}
 		});
@@ -189,10 +189,6 @@ public class VentanaEnfermedades extends JFrame {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		textFieldMensaje = new JTextField();
-		textFieldMensaje.setBounds(1, 277, 453, 20);
-		contentPane.add(textFieldMensaje);
-		textFieldMensaje.setColumns(10);
 
 	}
 

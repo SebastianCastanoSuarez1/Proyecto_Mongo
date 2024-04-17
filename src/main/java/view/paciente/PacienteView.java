@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.util.List;
 import java.util.Optional;

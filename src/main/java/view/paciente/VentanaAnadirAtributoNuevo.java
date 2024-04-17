@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -39,8 +39,8 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 	private JFormattedTextField formattedDni;
 	private JButton btnComprobar;
 	MaskFormatter mascara;
-	private JTextField textFieldMensaje;
 	VentanaOpcionAnadirPaciente voa;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -129,10 +129,14 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 					Optional<Document> pacientes = controllerInterfaz.findByDni(formattedDni.getText().toString()) ;
 					if(pacientes.isPresent()) {
 						Boolean anadido =controllerInterfaz.actualizarPaciente(pacientes,textFieldNombreAtributo.getText(), textFieldValorAtributo.getText());
-						textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
+						if(anadido == true) {
+							lblMensaje.setText("El paciente ha sido actualizado con exito");
+							lblMensaje.setForeground(Color.GREEN);
+						}else {
+							lblMensaje.setText("El paciente no ha sido actualizado con exito");
+							lblMensaje.setForeground(Color.RED);
+						}
 
-					}else {
-						textFieldMensaje.setText("No existe el paciente con el DNI " + formattedDni.getText().toString());
 					}
 				}
 			}
@@ -143,7 +147,7 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 		
 		lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblDNI.setBounds(10, 25, 55, 40);
+		lblDNI.setBounds(73, 25, 55, 40);
 		contentPane.add(lblDNI);
 		
 		btnComprobar = new JButton("Comprobar");
@@ -163,20 +167,20 @@ public class VentanaAnadirAtributoNuevo extends JFrame {
 			}
 		});
 		btnComprobar.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnComprobar.setBounds(281, 34, 98, 27);
+		btnComprobar.setBounds(330, 34, 98, 27);
 		contentPane.add(btnComprobar);
 		
 		try {
             mascara = new MaskFormatter("########?");
             mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             formattedDni = new JFormattedTextField(mascara);
-    		formattedDni.setBounds(91, 36, 148, 26);
+    		formattedDni.setBounds(153, 36, 148, 26);
     		contentPane.add(formattedDni);
     		
-    		textFieldMensaje = new JTextField();
-    		textFieldMensaje.setBounds(10, 311, 457, 19);
-    		contentPane.add(textFieldMensaje);
-    		textFieldMensaje.setColumns(10);
+    		lblMensaje = new JLabel("");
+    		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
+    		lblMensaje.setBounds(20, 309, 467, 21);
+    		contentPane.add(lblMensaje);
     		
     		
         } catch (ParseException e) {

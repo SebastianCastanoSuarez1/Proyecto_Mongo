@@ -1,10 +1,11 @@
-package view;
+package view.medico;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import org.bson.Document;
 
@@ -12,12 +13,14 @@ import controller.MedicoController_Interfaz;
 
 import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Optional;
 import java.awt.event.ActionEvent;
 
@@ -25,7 +28,8 @@ public class VentanaMostrarMedico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textFieldDNI;
+	JFormattedTextField formattedDni;
+	MaskFormatter mascara;
 	private JTextField textFieldNombre;
 	private JTextField textFieldAtributo;
 	private JTextField textFieldValor;
@@ -88,22 +92,22 @@ public class VentanaMostrarMedico extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				lblMensaje.setText("Introduzca el DNI");
 				lblMensaje.setVisible(true);
-				textFieldDNI.setVisible(true);
-				textFieldDNI.setText("");
+				formattedDni.setVisible(true);
+				formattedDni.setText("");
 				textAreaMostrar.setText("");
-				textFieldDNI.addActionListener(new ActionListener() {
+				formattedDni.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						String dni = textFieldDNI.getText();
+						String dni = formattedDni.getText();
 						if (dni.matches("^\\d{8}[A-Z]$")) {
 							lblMensaje.setVisible(false);
-							textFieldDNI.setVisible(false);
-							Optional<Document> pacientes = controllerMedico.findByDni(dni);
+							formattedDni.setVisible(false);
+							Optional<Document> medico = controllerMedico.findByDni(dni);
 
-							if (pacientes.isPresent()) {
-								textAreaMostrar.setText(controllerMedico.mostrar(pacientes));
+							if (medico.isPresent()) {
+								textAreaMostrar.setText(controllerMedico.mostrar(medico));
 							} else {
-								textAreaMostrar.setText("El paciente con DNI " + dni + " no existe");
+								textAreaMostrar.setText("El medico con DNI " + dni + " no existe");
 							}
 						} else {
 							textAreaMostrar.setText("El dni debe tener este formato :00000000A ");
@@ -122,6 +126,7 @@ public class VentanaMostrarMedico extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				lblMensaje.setText("Introduzca el nombre");
 				lblMensaje.setVisible(true);
+				formattedDni.setVisible(false);
 				textFieldNombre.setVisible(true);
 				textFieldNombre.setText("");
 				textAreaMostrar.setText("");
@@ -149,7 +154,7 @@ public class VentanaMostrarMedico extends JFrame {
 				lblMensaje.setText("Introduzca el nombre del atributo");
 				lblMensaje.setVisible(true);
 				textFieldAtributo.setText("");
-				textFieldDNI.setVisible(false);
+				formattedDni.setVisible(false);
 				textFieldNombre.setVisible(false);
 				textFieldValor.setVisible(false);
 				textAreaMostrar.setText("");
@@ -203,11 +208,18 @@ public class VentanaMostrarMedico extends JFrame {
 		lblMensaje.setBounds(260, 10, 185, 23);
 		contentPane.add(lblMensaje);
 		
-		textFieldDNI = new JTextField();
-		textFieldDNI.setVisible(false);
-		textFieldDNI.setBounds(254, 46, 207, 19);
-		contentPane.add(textFieldDNI);
-		textFieldDNI.setColumns(10);
+		try {
+			mascara = new MaskFormatter("########?");
+			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+			formattedDni = new JFormattedTextField(mascara);
+			formattedDni.setVisible(false);
+			formattedDni.setBounds(252, 46, 209, 19);
+			contentPane.add(formattedDni);
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		
 		textFieldNombre = new JTextField();
 		textFieldNombre.setVisible(false);

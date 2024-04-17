@@ -1,16 +1,18 @@
-package view;
+package view.paciente;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.Font;
+
+import view.VentanaPrincipal;
 
 public class VentanaPrincipalPaciente extends JFrame {
 
@@ -24,6 +26,9 @@ public class VentanaPrincipalPaciente extends JFrame {
 	VentanaMostrarPaciente vmp;
 	VentanaModificarPaciente vmop;
 	VentanaEliminarPaciente vep;
+	private JButton btnCancelar;
+	VentanaPrincipal vp;
+
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -90,7 +95,7 @@ public class VentanaPrincipalPaciente extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(236, 168, 148, 23);
+		btnModificar.setBounds(236, 164, 148, 23);
 		contentPane.add(btnModificar);
 		
 		btnMostrar = new JButton("Mostrar paciente");
@@ -104,7 +109,7 @@ public class VentanaPrincipalPaciente extends JFrame {
 				}
 			}
 		});
-		btnMostrar.setBounds(48, 168, 136, 23);
+		btnMostrar.setBounds(48, 164, 136, 23);
 		contentPane.add(btnMostrar);
 		
 		JLabel lblNewLabel = new JLabel("Clinica DABAS\r\n");
@@ -112,5 +117,16 @@ public class VentanaPrincipalPaciente extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel.setBounds(145, 10, 148, 45);
 		contentPane.add(lblNewLabel);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				vp = new VentanaPrincipal();
+				vp.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancelar.setBounds(145, 209, 136, 23);
+		contentPane.add(btnCancelar);
 	}
 }

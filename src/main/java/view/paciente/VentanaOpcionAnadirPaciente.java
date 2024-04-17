@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.EventQueue;
 
@@ -12,23 +12,21 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class VentanaOpcionAnadirMedico extends JFrame {
+public class VentanaOpcionAnadirPaciente extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	JLabel lblNewLabel;
-	JButton btnAadirNuevoMedico;
+	JButton btnAnadirPaciente;
 	JButton btnAnadirAtributo;
-	JButton btnAadirPacientesA;
-	JButton btnSalir;
-	JButton btnAadirComponete;
-	JButton btnAnadirLista;
-	VentanaPrincipalMedico vpm;
-	VentanaAnadirMedico vam;
-	VentanaAnadirAtributoNuevoMedico vaanm;
-	VentanaAnadirPacientesCargo vapc;
-	VentanaAnadirComponenteMedico vacm;
-	VentanaAnadirListaMedico valm;
+	JButton btnAnadirHistorialMedico;
+	VentanaAgregarPaciente vap;
+	VentanaAnadirAtributoNuevo van;
+	VentanaPrincipalPaciente vp;
+	private JButton btnSalir;
+	private JButton btnAadirComponete;
+	VentanaLista vl;
+
 	/**
 	 * Launch the application.
 	 */
@@ -36,7 +34,7 @@ public class VentanaOpcionAnadirMedico extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaOpcionAnadirMedico frame = new VentanaOpcionAnadirMedico();
+					VentanaOpcionAnadirPaciente frame = new VentanaOpcionAnadirPaciente();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,92 +46,98 @@ public class VentanaOpcionAnadirMedico extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaOpcionAnadirMedico() {
+	public VentanaOpcionAnadirPaciente() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 527, 351);
+		setBounds(100, 100, 473, 331);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		lblNewLabel = new JLabel("Que desea añadir");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblNewLabel.setBounds(160, 10, 199, 39);
+		lblNewLabel.setBounds(131, 22, 178, 34);
 		contentPane.add(lblNewLabel);
-		
-		btnAadirNuevoMedico = new JButton("Añadir nuevo medico\r\n");
-		btnAadirNuevoMedico.addActionListener(new ActionListener() {
+
+		btnAnadirPaciente = new JButton("Añadir nuevo paciente");
+		btnAnadirPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vam = new VentanaAnadirMedico();
-				vam.setVisible(true);
+				vap = new VentanaAgregarPaciente();
+				vap.setVisible(true);
 				dispose();
 			}
 		});
-		btnAadirNuevoMedico.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAadirNuevoMedico.setBounds(33, 66, 171, 34);
-		contentPane.add(btnAadirNuevoMedico);
-		
+		btnAnadirPaciente.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnAnadirPaciente.setBounds(21, 95, 171, 34);
+		contentPane.add(btnAnadirPaciente);
+
 		btnAnadirAtributo = new JButton("Añadir atributo nuevo");
 		btnAnadirAtributo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vaanm = new VentanaAnadirAtributoNuevoMedico();
-				vaanm.setVisible(true);
-				dispose();
+				if (btnAnadirAtributo == e.getSource()) {
+					van = new VentanaAnadirAtributoNuevo();
+					van.setVisible(true);
+					dispose();
+				}
 			}
 		});
 		btnAnadirAtributo.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAnadirAtributo.setBounds(33, 132, 171, 34);
+		btnAnadirAtributo.setBounds(21, 161, 171, 34);
 		contentPane.add(btnAnadirAtributo);
-		
-		btnAadirPacientesA = new JButton("Añadir pacientes a cargo\r\n\r\n");
-		btnAadirPacientesA.addActionListener(new ActionListener() {
+
+		btnAnadirHistorialMedico = new JButton("Añadir historial medico\r\n");
+		btnAnadirHistorialMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vapc = new VentanaAnadirPacientesCargo();
-				vapc.setVisible(true);
-				dispose();
+				if (btnAnadirHistorialMedico == e.getSource()) {
+					VentanaAñadirHistorialMedico va = new VentanaAñadirHistorialMedico();
+					va.setVisible(true);
+					dispose();
+				}
 			}
 		});
-		btnAadirPacientesA.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAadirPacientesA.setBounds(251, 66, 171, 34);
-		contentPane.add(btnAadirPacientesA);
-		
+		btnAnadirHistorialMedico.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnAnadirHistorialMedico.setBounds(239, 95, 171, 34);
+		contentPane.add(btnAnadirHistorialMedico);
+
 		btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vpm = new VentanaPrincipalMedico();
-				vpm.setVisible(true);
-				dispose();
+				if (btnSalir == e.getSource()) {
+					vp = new VentanaPrincipalPaciente();
+					vp.setVisible(true);
+					dispose();
+				}
 			}
 		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnSalir.setBounds(251, 197, 171, 34);
+		btnSalir.setBounds(239, 226, 171, 34);
 		contentPane.add(btnSalir);
-		
+
 		btnAadirComponete = new JButton("Añadir Componente");
 		btnAadirComponete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vacm = new VentanaAnadirComponenteMedico();
-				vacm.setVisible(true);
+				VentanaAnadirComponente vae = new VentanaAnadirComponente();
+				vae.setVisible(true);
 				dispose();
 			}
 		});
 		btnAadirComponete.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAadirComponete.setBounds(251, 132, 171, 34);
+		btnAadirComponete.setBounds(239, 161, 171, 34);
 		contentPane.add(btnAadirComponete);
 		
-		btnAnadirLista = new JButton("Añadir lista");
+		JButton btnAnadirLista = new JButton("Añadir lista");
 		btnAnadirLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				valm = new VentanaAnadirListaMedico();
-				valm.setVisible(true);
+				vl = new VentanaLista();
+				vl.setVisible(true);
 				dispose();
 			}
 		});
 		btnAnadirLista.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnAnadirLista.setBounds(33, 197, 171, 34);
+		btnAnadirLista.setBounds(21, 226, 171, 34);
 		contentPane.add(btnAnadirLista);
 	}
-
 }

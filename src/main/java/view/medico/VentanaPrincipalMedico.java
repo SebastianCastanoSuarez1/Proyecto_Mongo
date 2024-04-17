@@ -1,10 +1,13 @@
-package view;
+package view.medico;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import view.VentanaPrincipal;
+
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,11 +22,14 @@ public class VentanaPrincipalMedico extends JFrame {
 	VentanaEliminarMedico vem;
 	VentanaOpcionAnadirMedico voam;
 	VentanaMostrarMedico vmm;
+	VentanaModificarMedico vmod;
 	JButton btnAgregarMedico;
 	JButton btnMostrarMedico;
 	JButton btnModificarMedico;
 	JButton btnEliminarMedico;
 	JLabel lblTitulo;
+	private JButton btnCancelar;
+	VentanaPrincipal vp;
 	/**
 	 * Launch the application.
 	 */
@@ -73,15 +79,18 @@ public class VentanaPrincipalMedico extends JFrame {
 				dispose();
 			}
 		});
-		btnMostrarMedico.setBounds(67, 187, 127, 24);
+		btnMostrarMedico.setBounds(67, 157, 127, 24);
 		contentPane.add(btnMostrarMedico);
 		
 		btnModificarMedico = new JButton("Modificar medico");
 		btnModificarMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				vmod = new VentanaModificarMedico();
+				vmod.setVisible(true);
+				dispose();
 			}
 		});
-		btnModificarMedico.setBounds(245, 187, 133, 27);
+		btnModificarMedico.setBounds(245, 157, 133, 27);
 		contentPane.add(btnModificarMedico);
 		
 		btnEliminarMedico = new JButton("Eliminar medico");
@@ -99,6 +108,16 @@ public class VentanaPrincipalMedico extends JFrame {
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblTitulo.setBounds(177, 28, 114, 27);
 		contentPane.add(lblTitulo);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				vp = new VentanaPrincipal();
+				vp.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancelar.setBounds(154, 214, 127, 24);
+		contentPane.add(btnCancelar);
 	}
-
 }

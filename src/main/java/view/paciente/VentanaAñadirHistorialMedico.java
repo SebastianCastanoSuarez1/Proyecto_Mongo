@@ -1,4 +1,4 @@
-package view;
+package view.paciente;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -33,7 +33,6 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 	JLabel lblDNI;
 	JFormattedTextField formattedDni;
 	JButton btnComprobar;
-	JTextField textFieldMensaje;
 	JComboBox<String> comboBoxAlergenos;
 	JLabel lblAlergenos;
 	JTextField textFieldAlergenos;
@@ -47,6 +46,7 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 	JTextField textFieldMedicamentos;
 	JButton btnAceptar;
 	JButton btnCancelar;
+	private JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -77,11 +77,6 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		textFieldMensaje = new JTextField();
-		textFieldMensaje.setBounds(0, 310, 473, 20);
-		contentPane.add(textFieldMensaje);
-		textFieldMensaje.setColumns(10);
 
 		lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -118,7 +113,7 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 			mascara = new MaskFormatter("########?");
 			mascara.setValidCharacters("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			formattedDni = new JFormattedTextField(mascara);
-			formattedDni.setBounds(131, 32, 177, 20);
+			formattedDni.setBounds(123, 33, 177, 20);
 			contentPane.add(formattedDni);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -249,8 +244,13 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 		        // Dividir en palabras, no en caracteres
 		        if(btnAceptar == e.getSource()) {
 		            Boolean anadido = controllerInterfaz.anadirVariables(pacientes, historialMedicoAlergenos, historialMedicoMedicamentos,enfermedades);
-					textFieldMensaje.setText(anadido ? "El paciente ha sido actualizado correctamente" : "El paciente no se ha actualizado");
-
+		            if(anadido == true) {
+						lblMensaje.setText("El paciente ha sido actualizado con exito");
+						lblMensaje.setForeground(Color.GREEN);
+					}else {
+						lblMensaje.setText("El paciente no ha sido actualizado con exito");
+						lblMensaje.setForeground(Color.RED);
+					}
 		        }
 		    }
 		});
@@ -269,6 +269,11 @@ public class VentanaAñadirHistorialMedico extends JFrame {
 		});
 		btnCancelar.setBounds(138, 264, 89, 23);
 		contentPane.add(btnCancelar);
+		
+		lblMensaje = new JLabel("");
+		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMensaje.setBounds(10, 312, 465, 21);
+		contentPane.add(lblMensaje);
 
 	}
 }
